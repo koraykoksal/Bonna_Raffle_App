@@ -12,7 +12,7 @@ import Textarea from '@mui/joy/Textarea';
 import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { activityInfo } from '../helper/avtivity_Info';
-
+import { bonnaDepartments } from "../helper/bonna_departments"
 
 
 const style = {
@@ -150,18 +150,25 @@ const Application_Modal = ({ open, handleClose, info, setInfo }) => {
                   value={info.department}
                   onChange={handleChange}
                 >
-                  <MenuItem value="RED">RED</MenuItem>
+                  {
+                    bonnaDepartments.map((item, index) => (
+                      <MenuItem key={index} value={item.name}>{item.name}</MenuItem>
+                    ))
+                  }
+
                 </Select>
               </FormControl>
             </Box>
 
 
             <Button
+            sx={{mt:3,textTransform:'none',letterSpacing:5}}
               variant='contained'
               fullWidth
               type='submit'
+              color='success'
             >
-              {info?.id ? "Update Data" : "Add New Data"}
+              Bitir
             </Button>
 
 
