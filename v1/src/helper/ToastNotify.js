@@ -28,12 +28,14 @@ export const toastSuccessNotify = (msg) => {
 //ERROR
 export const toastErrorNotify = (msg) => {
   toast.error(msg, {
-    autoClose: 2000,
+    position: "top-right",
+    autoClose: 10000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
+    theme: "colored",
   });
 };
 
@@ -41,13 +43,13 @@ export const toastErrorNotify = (msg) => {
 //INFO
 export const toastInfoNotify = (msg) => {
   toast(msg, {
-  position: "top-right",
-  autoClose: 9500,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "light",
+    position: "top-right",
+    autoClose: 9500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
   });
 };

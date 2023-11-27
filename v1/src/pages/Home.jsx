@@ -1,10 +1,21 @@
 import { Button, Container } from '@mui/material'
 import React from 'react'
 import Application_Modal from '../components/Application_Modal'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { activityInfo } from '../helper/avtivity_Info';
+import useRaffleCall from '../hooks/useRaffleCall';
+import { useSelector } from 'react-redux';
 
 export const Home = () => {
 
+
+  const {getFireData} = useRaffleCall()
+  const {firebase_activityData} = useSelector((state)=>state.raffle)
+
+  useEffect(() => {
+    getFireData('bonna-activity')
+  }, [])
+  
 
 
   const [info, setInfo] = useState({
@@ -13,7 +24,8 @@ export const Home = () => {
     surname: "",
     phone: "",
     department: "",
-    activityName: ""
+    activityName: activityInfo.name,
+    activityDate: activityInfo.date
   })
 
   const [open, setOpen] = useState(false)
@@ -27,12 +39,14 @@ export const Home = () => {
       phone: "",
       department: "",
       birthday: "",
-      activityName: ""
+      activityName: activityInfo.name,
+      activityDate: activityInfo.date
 
     })
   }
 
 
+  
 
   return (
 

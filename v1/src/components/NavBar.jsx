@@ -13,14 +13,28 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import logoBonna from "../assets/img/logobonna.png"
-import { CardMedia } from '@mui/material';
+import { CardMedia, ListItemButton, ListItemText } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router';
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import useAuthCall from '../hooks/useAuthCall';
 
 
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [
+  {
+    title:"Home",
+    url:"/"
+  }
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
+
+  const { logout } = useAuthCall()
+  const { currentUser } = useSelector((state) => state.auth)
+
+  const navigate = useNavigate()
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -41,11 +55,13 @@ const NavBar = () => {
   };
 
 
+
+
   return (
 
     <AppBar position="static" sx={{ backgroundColor: '#1F2937' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} >
             <img
@@ -53,61 +69,90 @@ const NavBar = () => {
               alt="bonnaLogo"
               width='130px'
             />
+
           </Box>
+
 
           {/* PAGE MENU */}
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
+          {
+            currentUser ?
+              (
+                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleOpenNavMenu}
+                    color="inherit"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorElNav}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    open={Boolean(anchorElNav)}
+                    onClose={handleCloseNavMenu}
+                    sx={{
+                      display: { xs: 'block', md: 'none' },
+                    }}
+                  >
+                    {pages.map((page,index) => (
+                      <MenuItem key={index} onClick={()=>{
+                        navigate(page.url)
+                        handleCloseNavMenu()
+                      }}>
+                        {/* <Typography textAlign="center">{page}</Typography> */}
+                        <ListItemButton>
+                        <ListItemText>{page.title}</ListItemText>
+                        </ListItemButton>
+                        
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+              ) :
+              (
+                ""
+              )
+          }
 
 
           {/* MOBILE PAGES MENU */}
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
+          {
+            currentUser ?
+              (
+                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                  {pages.map((page,index) => (
+                    <Button
+                      key={index}
+                      onClick={()=>{
+                        navigate(page.url)
+                        handleCloseNavMenu()
+                      }}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      {page.title}
+                    </Button>
+                  ))}
+                </Box>
+              ) :
+
+              (
+                ""
+              )
+          }
 
           {/* SETTINGS MENU */}
 
@@ -141,8 +186,26 @@ const NavBar = () => {
             </Menu>
           </Box> */}
 
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
+            {
+              currentUser && (<Typography>{currentUser || null}</Typography>)
+            }
+            {
+              currentUser && (<RiLogoutCircleRLine size={22} color='#B31312' cursor='pointer' onClick={() => logout()} />)
+            }
+          </Box>
+
         </Toolbar>
+
       </Container>
+
+
+
+      <Box>
+        <Outlet />
+      </Box>
+
+
     </AppBar>
 
   )

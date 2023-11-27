@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 
-@media (max-width:800px){
 
-    .hamburger_ul{
+@media (max-width:800px) {
+
+    .hamburger_ul {
         display: none;
         height: 100vh;
         position: fixed;

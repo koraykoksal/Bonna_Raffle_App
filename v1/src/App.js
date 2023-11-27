@@ -16,8 +16,9 @@ function App() {
 
         <PersistGate loading={null} persistor={persistor}>
         <AppRouter/>
-        </PersistGate>
         <ToastContainer/>
+        </PersistGate>
+        
       </Provider>
       
   

@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { activityInfo } from '../helper/avtivity_Info';
 import { bonnaDepartments } from "../helper/bonna_departments"
-
+import useRaffleCall from '../hooks/useRaffleCall';
 
 const style = {
   position: 'absolute',
@@ -32,6 +32,9 @@ const style = {
 
 const Application_Modal = ({ open, handleClose, info, setInfo }) => {
 
+
+  const {postFireData,getFireData} = useRaffleCall()
+
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value })
   }
@@ -40,8 +43,10 @@ const Application_Modal = ({ open, handleClose, info, setInfo }) => {
 
     e.preventDefault()
 
+    getFireData('bonna-activity')
+    postFireData('bonna-activity',info)
 
-
+    handleClose()
   }
 
 
