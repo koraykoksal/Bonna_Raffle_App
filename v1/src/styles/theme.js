@@ -1,4 +1,6 @@
-//create theme
+import pattern1 from "../assets/img/pattern1.png"
+import pattern2 from "../assets/img/pattern2.png"
+
 
 export const lightTheme = {
   colors: {
@@ -31,3 +33,28 @@ export const darktheme = {
     lg: "992px",
   },
 };
+
+
+export const homeBgPattern={
+
+  width: "100%",
+  height: "900px",
+  backgroundImage: `url(${pattern1})`,
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+
+
+}
+
+export const detailBgPattern={
+
+  width: "100%",
+  height: "900px",
+  backgroundImage: `url(${pattern2})`,
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+
+
+}

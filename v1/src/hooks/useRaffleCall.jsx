@@ -20,6 +20,7 @@ import { useState } from 'react';
 const useRaffleCall = () => {
 
     const dispatch = useDispatch()
+
     const { firebase_activityData } = useSelector((state) => state.raffle)
 
     const postFireData = async (address, info) => {

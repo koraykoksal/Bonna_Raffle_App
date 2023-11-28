@@ -11,7 +11,6 @@ import Select from '@mui/material/Select';
 import Textarea from '@mui/joy/Textarea';
 import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { activityInfo } from '../helper/avtivity_Info';
 import { bonnaDepartments } from "../helper/bonna_departments"
 import useRaffleCall from '../hooks/useRaffleCall';
 
@@ -30,7 +29,7 @@ const style = {
 
 
 
-const Application_Modal = ({ open, handleClose, info, setInfo }) => {
+const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
   const {postFireData,getFireData} = useRaffleCall()
@@ -68,10 +67,10 @@ const Application_Modal = ({ open, handleClose, info, setInfo }) => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 1 }}>
               <Typography variant="subtitle2" component="h2" color="#000000">
-                Aktivite : {activityInfo?.name}
+                Aktivite : {state.name}
               </Typography>
               <Typography variant="subtitle2" component="h2" color="#000000">
-                Tarih : {activityInfo?.date}
+                Tarih : {state.date}
               </Typography>
             </Box>
 

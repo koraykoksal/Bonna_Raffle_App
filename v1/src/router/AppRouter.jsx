@@ -7,6 +7,7 @@ import AdminLogin from '../components/AdminLogin'
 import PrivateRouter from './PrivateRoute'
 import Login from '../pages/Login'
 import Admin from '../pages/Admin'
+import EtkinlikDetail from '../pages/EtkinlikDetail'
 
 
 
@@ -21,6 +22,7 @@ export const AppRouter = () => {
       <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='login' element={<Login/>}/>
+      <Route path='/:id' element={<EtkinlikDetail/>}/>
       <Route  element={<PrivateRouter/>}>
       <Route path='/admin'  element={<Admin/>}/>
       </Route>

@@ -1,21 +1,25 @@
-import { Button, Container } from '@mui/material'
+import { Box, Button, Container } from '@mui/material'
 import React from 'react'
 import Application_Modal from '../components/Application_Modal'
 import { useState, useEffect } from 'react'
 import { activityInfo } from '../helper/avtivity_Info';
 import useRaffleCall from '../hooks/useRaffleCall';
 import { useSelector } from 'react-redux';
+import cokguzelhareketler2 from "../assets/etkinlik/cokguzelhareketler2.png"
+import Etkinliks from '../components/Etkinliks';
+import { homeBgPattern } from '../styles/theme';
+
 
 export const Home = () => {
 
 
-  const {getFireData} = useRaffleCall()
-  const {firebase_activityData} = useSelector((state)=>state.raffle)
+  const { getFireData } = useRaffleCall()
+  const { firebase_activityData } = useSelector((state) => state.raffle)
 
   useEffect(() => {
     getFireData('bonna-activity')
   }, [])
-  
+
 
 
   const [info, setInfo] = useState({
@@ -46,23 +50,23 @@ export const Home = () => {
   }
 
 
-  
+
 
   return (
 
-    <div>
+    <div style={homeBgPattern}>
 
-      <Container sx={{ p: 1 }}>
-        <Button
-          variant='contained'
-          sx={{ p: 1, mt: 3 }}
-          onClick={handleOpen}
-        >
-          Başvur
-        </Button>
-      </Container>
+      <Box >
 
-      <Application_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} />
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 5, gap: 5 }}>
+          <Etkinliks />
+        </Box>
+
+
+      </Box>
+
+
 
     </div>
 
