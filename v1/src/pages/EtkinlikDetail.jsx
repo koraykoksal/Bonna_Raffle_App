@@ -4,10 +4,13 @@ import { useLocation, useParams } from 'react-router'
 import { Box, Button, Container } from '@mui/material'
 import Application_Modal from '../components/Application_Modal'
 import { useState, useEffect } from 'react'
+import useRaffleCall from '../hooks/useRaffleCall'
 
 
 const EtkinlikDetail = () => {
 
+
+    const {get_bonnaPersonel}=useRaffleCall()
 
     const { id } = useParams()
     const { state } = useLocation()
@@ -39,6 +42,11 @@ const EtkinlikDetail = () => {
         })
     }
 
+
+    useEffect(() => {
+      get_bonnaPersonel()
+    }, [])
+    
 
 
     return (

@@ -4,7 +4,8 @@ import {
     fetchStart,
     fetchFail,
     fetchApplyData,
-    fetchActivityData
+    fetchActivityData,
+    fetchBonnaPersonelData
 
 } from '../features/raffleSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,7 +22,7 @@ const useRaffleCall = () => {
 
     const dispatch = useDispatch()
 
-    const { firebase_activityData } = useSelector((state) => state.raffle)
+    const { firebase_activityData, bonnaPersonel } = useSelector((state) => state.raffle)
 
     const postFireData = async (address, info) => {
 
@@ -29,27 +30,42 @@ const useRaffleCall = () => {
 
         try {
 
-            const dizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
+            await get_bonnaPersonel()
+            await getFireData('bonna-activity')
 
 
-            const sameData = dizi.filter((item) => item.tcNo == info.tcNo)
+            const findPersonel = bonnaPersonel.find((item) => item.TCKIMLIKNO == info.tcNo)
 
-            if (sameData) {
-                toastErrorNotify(`${info.tcNo} kimlik nuraması ile kayıt bulunmaktadır. Tekrar kayıt yapamazsınız !`)
+            if (findPersonel) {
+
+                const dizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
+
+                const sameData = dizi.find((item) => item.tcNo === info.tcNo);
+
+                if (sameData) {
+                    toastErrorNotify(`${info.tcNo} kimlik nuraması ile kayıt bulunmaktadır. Tekrar kayıt yapamazsınız !`)
+                }
+                else {
+                    const uID = uid()
+                    const db = getDatabase();
+                    set(ref(db, `${address}/` + uID), info);
+                    toastSuccessNotify('Başvuru Yapıldı ✅')
+                }
             }
-            else {
-                const uID = uid()
-                const db = getDatabase();
-                set(ref(db, `${address}/` + uID), info);
-                toastSuccessNotify('Başvuru Yapıldı ✅')
+            else{
+
+                toastErrorNotify(`Bonna firmasında ${info.tcNo} TC No ve ${info.name} ${info.surname} isimli personel bulunmaktadır. Kayıt yapamazsınız !`)
             }
+
+
+
+
 
         } catch (error) {
             toastErrorNotify('Başvuru Yapılamadı ❌')
         }
 
     }
-
 
 
     //! firebase data çek
@@ -84,12 +100,36 @@ const useRaffleCall = () => {
     }
 
 
+    const get_bonnaPersonel = async () => {
 
-    
+        dispatch(fetchStart())
+
+        try {
+
+            const options = {
+                method: 'GET',
+                url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
+                headers: {
+                    'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`
+
+                }
+            }
+
+            const res = await axios(options)
+            dispatch(fetchBonnaPersonelData(res?.data))
+
+        } catch (error) {
+            console.log("get_bonnaPersonel: ", error)
+        }
+    }
+
+
+
     return {
 
         postFireData,
-        getFireData
+        getFireData,
+        get_bonnaPersonel
 
     }
 

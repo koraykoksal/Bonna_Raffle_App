@@ -15,20 +15,20 @@ export const AppRouter = () => {
 
 
   return (
-    
+
     <>
-    <BrowserRouter>
-  <NavBar/>
-      <Routes>
-      <Route path='/' element={<Home/>}/>
-      <Route path='login' element={<Login/>}/>
-      <Route path='/:id' element={<EtkinlikDetail/>}/>
-      <Route  element={<PrivateRouter/>}>
-      <Route path='/admin'  element={<Admin/>}/>
-      </Route>
-      <Route path='*' element={<NotFound/>}/>
-    </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='login' element={<Login />} />
+          <Route path='/:id' element={<EtkinlikDetail />} />
+          <Route element={<PrivateRouter />}>
+            <Route path='/admin' element={<Admin />} />
+          </Route>
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
 
     </>
   )

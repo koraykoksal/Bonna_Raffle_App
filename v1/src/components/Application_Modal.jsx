@@ -29,10 +29,10 @@ const style = {
 
 
 
-const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
+const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
 
-  const {postFireData,getFireData} = useRaffleCall()
+  const { postFireData, getFireData } = useRaffleCall()
 
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value })
@@ -42,8 +42,8 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
     e.preventDefault()
 
-    getFireData('bonna-activity')
-    postFireData('bonna-activity',info)
+    // getFireData('bonna-activity')
+    postFireData('bonna-activity', info)
 
     handleClose()
   }
@@ -87,6 +87,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
               <TextField
+                required
                 fullWidth
                 label="TC No"
                 name="tcNo"
@@ -103,6 +104,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
               <TextField
+                required
                 fullWidth
                 label="İsim"
                 name="name"
@@ -116,6 +118,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
               <TextField
+                required
                 fullWidth
                 label="Soyisim"
                 name="surname"
@@ -132,6 +135,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
               <TextField
+                required
                 fullWidth
                 label="Telefon"
                 name="phone"
@@ -147,6 +151,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
               <FormControl fullWidth>
                 <InputLabel id="department">Departman</InputLabel>
                 <Select
+                  required
                   labelId="reddepartmentkabul"
                   id="department"
                   name='department'
@@ -166,7 +171,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo,state }) => {
 
 
             <Button
-            sx={{mt:3,textTransform:'none',letterSpacing:5}}
+              sx={{ mt: 3, textTransform: 'none', letterSpacing: 5 }}
               variant='contained'
               fullWidth
               type='submit'
