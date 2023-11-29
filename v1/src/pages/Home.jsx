@@ -1,6 +1,6 @@
 import { Box, Button, Container } from '@mui/material'
 import React from 'react'
-import Application_Modal from '../components/Application_Modal'
+import Application_Modal from '../components/modals/Application_Modal'
 import { useState, useEffect } from 'react'
 import { activityInfo } from '../helper/avtivity_Info';
 import useRaffleCall from '../hooks/useRaffleCall';

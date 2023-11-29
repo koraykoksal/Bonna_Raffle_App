@@ -17,15 +17,18 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button } from '@mui/material';
-import Application_Modal from '../components/Application_Modal'
+import Application_Modal from '../components/modals/Application_Modal'
 import { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
+import { uid } from "uid";
+
 
 const Etkinliks = () => {
 
     const navigate = useNavigate()
 
     const [info, setInfo] = useState({
+        userID:uid(),
         tcNo: "",
         name: "",
         surname: "",
@@ -40,6 +43,7 @@ const Etkinliks = () => {
     const handleClose = () => {
         setOpen(false)
         setInfo({
+            userID:uid(),
             tcNo: "",
             name: "",
             surname: "",
@@ -88,6 +92,7 @@ const Etkinliks = () => {
                     ))
                 }
 
+             
                 
             </Box>
 

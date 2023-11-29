@@ -11,8 +11,10 @@ import Select from '@mui/material/Select';
 import Textarea from '@mui/joy/Textarea';
 import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { bonnaDepartments } from "../helper/bonna_departments"
-import useRaffleCall from '../hooks/useRaffleCall';
+import { bonnaDepartments } from "../../helper/bonna_departments"
+import useRaffleCall from '../../hooks/useRaffleCall';
+import { useNavigate } from "react-router-dom"
+
 
 const style = {
   position: 'absolute',
@@ -31,7 +33,7 @@ const style = {
 
 const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
-
+  const navigate = useNavigate()
   const { postFireData, getFireData } = useRaffleCall()
 
   const handleChange = (e) => {
@@ -46,6 +48,8 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
     postFireData('bonna-activity', info)
 
     handleClose()
+
+    navigate('/')
   }
 
 
@@ -187,6 +191,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
         </Box>
       </Modal>
 
+     
 
     </div>
   )

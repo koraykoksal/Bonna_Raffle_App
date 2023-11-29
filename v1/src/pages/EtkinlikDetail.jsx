@@ -2,7 +2,7 @@ import React from 'react'
 import { detailBgPattern } from '../styles/theme'
 import { useLocation, useParams } from 'react-router'
 import { Box, Button, Container } from '@mui/material'
-import Application_Modal from '../components/Application_Modal'
+import Application_Modal from '../components/modals/Application_Modal'
 import { useState, useEffect } from 'react'
 import useRaffleCall from '../hooks/useRaffleCall'
 

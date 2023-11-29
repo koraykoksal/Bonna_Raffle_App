@@ -24,6 +24,7 @@ const useRaffleCall = () => {
 
     const { firebase_activityData, bonnaPersonel } = useSelector((state) => state.raffle)
 
+    
     const postFireData = async (address, info) => {
 
         dispatch(fetchStart())
@@ -98,6 +99,7 @@ const useRaffleCall = () => {
 
 
     }
+
 
 
     const get_bonnaPersonel = async () => {
