@@ -16,12 +16,12 @@ import { db } from "../db/firebase_db"
 import { getDatabase, onValue, ref, remove, set, update } from "firebase/database";
 import { uid } from "uid";
 import { useState } from 'react';
-
+import { useNavigate } from "react-router-dom"
 
 const useRaffleCall = () => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const { firebase_activityData, bonnaPersonel } = useSelector((state) => state.raffle)
 
     
@@ -51,6 +51,7 @@ const useRaffleCall = () => {
                     const db = getDatabase();
                     set(ref(db, `${address}/` + uID), info);
                     toastSuccessNotify('Başvuru Yapıldı ✅')
+                    navigate('/')
                 }
             }
             else{
@@ -80,6 +81,8 @@ const useRaffleCall = () => {
             const starCountRef = ref(db, `${address}/`);
             onValue(starCountRef, (snapshot) => {
                 const data = snapshot.val();
+
+                // console.log(data)
 
                 if (data == null || data == undefined) {
                     console.log("activity data null geliyor:", data)

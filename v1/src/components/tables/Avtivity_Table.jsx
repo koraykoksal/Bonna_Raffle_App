@@ -7,8 +7,9 @@ import { MdDelete } from "react-icons/md";
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 
 
-const Avtivity_Table = ({ activityData,delHandleOpen }) => {
+const Avtivity_Table = ({ activityData, delHandleOpen }) => {
 
+  const [data, setdata] = useState()
 
   const dataGrid_Columns = [
     // {
@@ -87,10 +88,10 @@ const Avtivity_Table = ({ activityData,delHandleOpen }) => {
             key={"delete"}
             icon={<MdDelete size={25} style={{ color: '#D80032' }} cursor='pointer' />}
             label="Delete"
-          onClick={() => {
-            delHandleOpen()
-            // setInfo({ id, type: 'bonna-activity' })
-          }}
+            onClick={() => {
+              delHandleOpen()
+              // setdata({ id, type: 'bonna-activity' })
+            }}
 
           />,
         ]
@@ -98,7 +99,6 @@ const Avtivity_Table = ({ activityData,delHandleOpen }) => {
     },
 
   ];
-
 
   return (
     <div>

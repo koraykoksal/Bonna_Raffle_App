@@ -59,7 +59,7 @@ export const Home = () => {
       <Box >
 
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 5, gap: 5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', py: 5, gap: 5 }}>
           <Etkinliks />
         </Box>
 

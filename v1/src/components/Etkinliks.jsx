@@ -62,7 +62,7 @@ const Etkinliks = () => {
 
         <>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', gap: 4 }}>
 
                 {
                     activityInfo.map((item, index) => (

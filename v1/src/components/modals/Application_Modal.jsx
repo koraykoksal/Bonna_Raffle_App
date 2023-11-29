@@ -44,12 +44,11 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
     e.preventDefault()
 
-    // getFireData('bonna-activity')
-    postFireData('bonna-activity', info)
+    // postFireData(`bonna-activity/${info.activityName}`, info)
+    postFireData(`bonna-activity`, info)
 
     handleClose()
 
-    navigate('/')
   }
 
 
