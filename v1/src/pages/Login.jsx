@@ -41,13 +41,29 @@ const Login = () => {
     })
   }
 
+  const handleKeyPress = (e) => {
+
+    // e.preventDefault()
+
+    if (e.key === 'Enter') {
+      login(info)
+
+      setInfo({
+        email: "",
+        password: ""
+      })
+    }
+  }
+
+
+  console.log(info)
 
 
   return (
 
     <Container maxWidth="lg" >
 
-      <Typography variant='h4' align='center'p={3} fontWeight={700} color='#ae0707'>Bonna Activity</Typography>
+      <Typography variant='h4' align='center' p={3} fontWeight={700} color='#ae0707'>Bonna Activity</Typography>
 
       <Grid
         container
@@ -59,7 +75,7 @@ const Login = () => {
         }}
       >
 
-      
+
 
         <Grid item xs={12} sm={10} md={6}>
           <Avatar
@@ -81,31 +97,34 @@ const Login = () => {
             Login
           </Typography>
 
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} >
-            <TextField
-              label="Email"
-              name="email"
-              id="email"
-              type="email"
-              variant="outlined"
-              value={info.email}
-              onChange={handleChange}
-            />
-            <TextField
-              label="Password"
-              name="password"
-              id="password"
-              type="password"
-              variant="outlined"
-              value={info.password}
-              onChange={handleChange}
-            />
-            <Button variant="contained" type="submit" onClick={handleSubmit}>
-              Submit
-            </Button>
+          <form onKeyUp={handleKeyPress}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
 
-          </Box>
+              <TextField
+                label="Email"
+                name="email"
+                id="email"
+                type="email"
+                variant="outlined"
+                value={info.email}
+                onChange={handleChange}
+                
+              />
+              <TextField
+                label="Password"
+                name="password"
+                id="password"
+                type="password"
+                variant="outlined"
+                value={info.password}
+                onChange={handleChange}
+              />
+              <Button variant="contained" type="button" onClick={handleSubmit}>
+                Submit
+              </Button>
 
+            </Box>
+          </form>
 
           {/* <Box sx={{ textAlign: "center", mt: 2 }}>
             <Link to="/register">Don't you have an account?</Link>
@@ -116,7 +135,7 @@ const Login = () => {
 
       </Grid>
 
-    
+
     </Container>
 
   )

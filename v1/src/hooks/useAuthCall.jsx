@@ -119,7 +119,7 @@ const useAuthCall = () => {
 
         signOut(auth);
         dispatch(logoutSuccess())
-        navigate("/");
+        navigate("/login");
         toastSuccessNotify("Logged out successfully!");
     }
 
