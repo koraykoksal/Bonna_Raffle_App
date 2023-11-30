@@ -24,7 +24,7 @@ const useRaffleCall = () => {
     const navigate = useNavigate()
     const { firebase_activityData, bonnaPersonel } = useSelector((state) => state.raffle)
 
-    
+
     const postFireData = async (address, info) => {
 
         dispatch(fetchStart())
@@ -54,7 +54,7 @@ const useRaffleCall = () => {
                     navigate('/')
                 }
             }
-            else{
+            else {
 
                 toastErrorNotify(`Bonna firmasında ${info.tcNo} TC No ve ${info.name} ${info.surname} isimli personel bulunmaktadır. Kayıt yapamazsınız !`)
             }
@@ -104,6 +104,18 @@ const useRaffleCall = () => {
     }
 
 
+    //! firebase data silme
+    const removeFirebaseData = async (address, id) => {
+
+        try {
+            const db = getDatabase();
+            remove(ref(db, `${address}/${id}`))
+            toastSuccessNotify('Data Deleted ✅')
+        } catch (error) {
+            toastErrorNotify('No Delete Data ❌')
+        }
+    }
+
 
     const get_bonnaPersonel = async () => {
 
@@ -134,6 +146,7 @@ const useRaffleCall = () => {
 
         postFireData,
         getFireData,
+        removeFirebaseData,
         get_bonnaPersonel
 
     }

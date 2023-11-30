@@ -20,6 +20,8 @@ const Admin = () => {
   const delHandleOpen = () => setdelOpen(true);
   const delHandleClose = () => setdelOpen(false);
 
+  const [info, setInfo] = useState({})
+
   useEffect(() => {
     getFireData('bonna-activity')
   }, [])
@@ -29,7 +31,7 @@ const Admin = () => {
     const data = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
     setactivityData(data)
-    
+
   }, [firebase_activityData])
 
 
@@ -39,9 +41,9 @@ const Admin = () => {
 
       <Box sx={{ p: 5 }}>
 
-        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} />
+        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo}/>
 
-        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} activityData={activityData} />
+        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} activityData={activityData} info={info}/>
 
       </Box>
 

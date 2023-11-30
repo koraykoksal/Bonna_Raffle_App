@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -7,19 +7,19 @@ import { MdDelete } from "react-icons/md";
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 
 
-const Avtivity_Table = ({ activityData, delHandleOpen }) => {
+const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
 
-  const [data, setdata] = useState()
+
 
   const dataGrid_Columns = [
-    // {
-    //     field: "id",
-    //     headerName: "ID",
-    //     minWidth: 150,
-    //     headerAlign: "center",
-    //     align: "center",
-    //     flex: 1,
-    // },
+    {
+      field: "id",
+      headerName: "ID",
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
     {
       field: "activityName",
       headerName: "Aktivite",
@@ -71,34 +71,49 @@ const Avtivity_Table = ({ activityData, delHandleOpen }) => {
     },
     {
       field: "actions",
+      type: 'actions',
       headerName: "#",
-      minWidth: 120,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
       flex: 1,
-      renderCell: ({ id }) => {
-        return [
-          // <GridActionsCellItem
-          //   key={"edit"}
-          //   icon={<AiFillEdit size={25} style={{ color: '#0802A3' }} cursor='pointer' />}
-          //   label="Edit"
-
-          // />,
-          <GridActionsCellItem
-            key={"delete"}
-            icon={<MdDelete size={25} style={{ color: '#D80032' }} cursor='pointer' />}
-            label="Delete"
-            onClick={() => {
-              delHandleOpen()
-              // setdata({ id, type: 'bonna-activity' })
-            }}
-
-          />,
-        ]
-      },
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<MdDelete size={25} style={{ color: '#D80032' }} />}
+          label="Delete"
+          onClick={()=>{
+            delHandleOpen()
+            setInfo(params.id)
+          }}
+          
+          // showInMenu
+        />,
+      ],
     },
+    // {
+    //   field: "actions",
+    //   headerName: "#",
+    //   minWidth: 120,
+    //   headerAlign: "center",
+    //   align: "center",
+    //   flex: 1,
+    //   renderCell: ({id}) => {
+    //     return[
+    //       <GridActionsCellItem
+    //       key={"delete"}
+    //       icon={<MdDelete size={25} style={{ color: '#D80032' }} cursor='pointer' />}
+    //       label="Delete"
+          
+    //     />,
+    //     ]
+    //   }
+    // },
 
   ];
+
+
+
+
 
   return (
     <div>
