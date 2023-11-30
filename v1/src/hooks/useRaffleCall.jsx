@@ -17,6 +17,8 @@ import { getDatabase, onValue, ref, remove, set, update } from "firebase/databas
 import { uid } from "uid";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom"
+import { bonnaPersonels } from '../helper/personels'
+
 
 const useRaffleCall = () => {
 
@@ -31,7 +33,7 @@ const useRaffleCall = () => {
 
         try {
 
-            await get_bonnaPersonel()
+            get_bonnaPersonel()
             await getFireData('bonna-activity')
 
 
@@ -117,23 +119,27 @@ const useRaffleCall = () => {
     }
 
 
-    const get_bonnaPersonel = async () => {
+    const get_bonnaPersonel = () => {
 
         dispatch(fetchStart())
 
         try {
 
-            const options = {
-                method: 'GET',
-                url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
-                headers: {
-                    'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`
+            // const options = {
+            //     method: 'GET',
+            //     url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
+            //     headers: {
+            //         'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`
 
-                }
-            }
+            //     }
+            // }
 
-            const res = await axios(options)
-            dispatch(fetchBonnaPersonelData(res?.data))
+            // const res = await axios(options)
+            // dispatch(fetchBonnaPersonelData(res?.data))
+
+            const res = bonnaPersonels.map((item)=>item)
+            // console.log("personel tcno: ",res)
+            dispatch(fetchBonnaPersonelData(res))
 
         } catch (error) {
             console.log("get_bonnaPersonel: ", error)
