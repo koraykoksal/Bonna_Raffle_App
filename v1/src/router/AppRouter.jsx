@@ -8,6 +8,7 @@ import PrivateRouter from './PrivateRoute'
 import Login from '../pages/Login'
 import Admin from '../pages/Admin'
 import EtkinlikDetail from '../pages/EtkinlikDetail'
+import Raffle from '../pages/Raffle'
 
 
 
@@ -25,6 +26,7 @@ export const AppRouter = () => {
           <Route path='/:id' element={<EtkinlikDetail />} />
           <Route element={<PrivateRouter />}>
             <Route path='/admin' element={<Admin />} />
+            <Route path='/raffle' element={<Raffle/>}/>
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>

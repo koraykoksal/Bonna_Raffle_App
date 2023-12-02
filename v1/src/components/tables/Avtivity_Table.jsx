@@ -121,6 +121,13 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
       <DataGrid
         columns={dataGrid_Columns}
         rows={activityData}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 25,
+            },
+          },
+        }}
         pageSizeOptions={[10, 25, 50, 75, 100]}
         slots={{ toolbar: GridToolbar }}
         disableRowSelectionOnClick

@@ -5,11 +5,12 @@ import { Box, Button, Container } from '@mui/material'
 import Application_Modal from '../components/modals/Application_Modal'
 import { useState, useEffect } from 'react'
 import useRaffleCall from '../hooks/useRaffleCall'
-
+import { useNavigate } from "react-router-dom"
 
 const EtkinlikDetail = () => {
 
 
+    const navigate = useNavigate()
     const {get_bonnaPersonel}=useRaffleCall()
 
     const { id } = useParams()
@@ -56,10 +57,14 @@ const EtkinlikDetail = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 4 }}>
                 <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' onClick={handleOpen} sx={{ width: '200px' }}>Başvur</Button>
+                    <Button variant='contained' color='success' onClick={handleOpen} sx={{ width: '200px' }}>Başvur</Button>
                 </Container>
                 <Container sx={{ display: 'flex', justifyContent: 'center' }}>
                     <img src={state.image} style={{ width: '850px' }} />
+                </Container>
+                <Container sx={{ display: 'flex', justifyContent: 'center',gap:3,mt:3 }}>
+                    <Button variant='outlined' color='secondary' onClick={()=>navigate(-1)} sx={{ width: '200px' }}>Geri</Button>
+                    <Button variant='contained'  color='info' onClick={()=>navigate('/')} sx={{ width: '200px' }}>Home</Button>
                 </Container>
             </Box>
 

@@ -25,6 +25,10 @@ const pages = [
   {
     title:"Home",
     url:"/"
+  },
+  {
+    title:"Raffle",
+    url:"raffle"
   }
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -63,7 +67,7 @@ const NavBar = () => {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} >
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 5 }} >
             <img
               src={logoBonna}
               alt="bonnaLogo"
@@ -186,7 +190,7 @@ const NavBar = () => {
             </Menu>
           </Box> */}
 
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
+          <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
             {
               currentUser && (<Typography>{currentUser || null}</Typography>)
             }
