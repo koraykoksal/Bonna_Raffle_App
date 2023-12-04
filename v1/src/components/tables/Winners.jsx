@@ -5,9 +5,9 @@ import { useEffect,useState } from 'react';
 
 
 
-const Winners = ({ info,katilimciSayisi }) => {
+const Winners = ({ info,katilimciSayisi,setdata }) => {
 
-    const [data, setdata] = useState([])
+    const [result, setResult] = useState([])
 
     const dataGrid_Columns = [
         {
@@ -88,8 +88,11 @@ const Winners = ({ info,katilimciSayisi }) => {
         }))
 
         setdata(result)
+        setResult(result)
+
     }, [info])
     
+
 
     return (
 
@@ -99,7 +102,7 @@ const Winners = ({ info,katilimciSayisi }) => {
         <Box p={3} mb={5}>
             <DataGrid
                 columns={dataGrid_Columns}
-                rows={data}
+                rows={result}
                 initialState={{
                     pagination: {
                         paginationModel: {

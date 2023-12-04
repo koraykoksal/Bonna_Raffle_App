@@ -36,16 +36,15 @@ const UserWinners = () => {
             phone:person.phone,
             activityDate:person.activityDate,
             department: person.department,
-            activityName:person.activityName
+            activityName:person.activityName,
+            rowNumber:person.rowNumber,
+            status:person.status
           });
         }
       });
     });
 
     setWinnersData(extractedData)
-
-    console.log(winnersData)
-
 
   }, [userWinners])
 

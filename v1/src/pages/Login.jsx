@@ -57,9 +57,6 @@ const Login = () => {
   }
 
 
-  console.log(info)
-
-
   return (
 
     <Container maxWidth="lg" >

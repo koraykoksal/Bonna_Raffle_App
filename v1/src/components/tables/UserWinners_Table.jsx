@@ -5,26 +5,17 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 const UserWinners_Table = ({winnersData}) => {
 
     const dataGrid_Columns = [
-        // {
-        //     field: "id",
-        //     headerName: "ID",
-        //     minWidth: 150,
-        //     headerAlign: "center",
-        //     align: "center",
-        //     flex: 1,
-        // },
         {
-            field: "activityName",
-            headerName: "Aktivite",
+            field: "id",
+            headerName: "id",
             minWidth: 150,
             headerAlign: "center",
             align: "center",
             flex: 1,
         },
-
         {
-            field: "activityDate",
-            headerName: "Tarih",
+            field: "rowNumber",
+            headerName: "Numara",
             minWidth: 150,
             headerAlign: "center",
             align: "center",
@@ -38,9 +29,18 @@ const UserWinners_Table = ({winnersData}) => {
             align: "center",
             flex: 1,
         },
+
         {
             field: "surname",
             headerName: "Soyad",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+        },
+        {
+            field: "department",
+            headerName: "Departman",
             minWidth: 150,
             headerAlign: "center",
             align: "center",
@@ -55,13 +55,22 @@ const UserWinners_Table = ({winnersData}) => {
             flex: 1,
         },
         {
-            field: "department",
-            headerName: "Departman",
+            field: "status",
+            headerName: "Durum",
             minWidth: 150,
             headerAlign: "center",
             align: "center",
             flex: 1,
         },
+        {
+            field: "activityName",
+            headerName: "Aktivite",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+        },
+
 
     ];
 

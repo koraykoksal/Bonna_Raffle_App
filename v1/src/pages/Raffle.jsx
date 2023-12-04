@@ -22,6 +22,9 @@ const Raffle = () => {
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
 
+    const [data, setdata] = useState([])
+
+    const cekilisSuresi=10000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
@@ -44,11 +47,8 @@ const Raffle = () => {
     //? çekilişi başlat
     const lottery = () => {
 
-        
-
         if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
            
-            
             const dataIndex = Math.floor(Math.random() * activityData.length)
             const selected = activityData.splice(dataIndex, 1)[0]; // Seçilen öğeyi al ve listeden çıkar
             setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
@@ -75,7 +75,7 @@ const Raffle = () => {
             setRaffleStart(true)
             currentIndex = 0;
             winners = [];
-            interval = setInterval(lottery, 1000)
+            interval = setInterval(lottery, cekilisSuresi)
         }
 
 
@@ -88,11 +88,9 @@ const Raffle = () => {
         }
         else{
             
-            post_userWinners('bonna-activity-winners',info)
+            post_userWinners('bonna-activity-winners',data)
         }
     }
-
-
 
 
     return (
@@ -135,7 +133,7 @@ const Raffle = () => {
                     <img src={loading} width={350} />
                 </Container>)
                 :
-                (<Winners info={info} katilimciSayisi={katilimciSayisi}/>)
+                (<Winners info={info} setdata={setdata} katilimciSayisi={katilimciSayisi}/>)
             }
 
 
