@@ -5,7 +5,8 @@ import {
     fetchFail,
     fetchApplyData,
     fetchActivityData,
-    fetchBonnaPersonelData
+    fetchBonnaPersonelData,
+    fetchUserWinnersData
 
 } from '../features/raffleSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -137,7 +138,7 @@ const useRaffleCall = () => {
             // const res = await axios(options)
             // dispatch(fetchBonnaPersonelData(res?.data))
 
-            const res = bonnaPersonels.map((item)=>item)
+            const res = bonnaPersonels.map((item) => item)
             // console.log("personel tcno: ",res)
             dispatch(fetchBonnaPersonelData(res))
 
@@ -146,27 +147,51 @@ const useRaffleCall = () => {
         }
     }
 
-    const post_userWinners=(address,info)=>{
+    const post_userWinners = (address, info) => {
 
         dispatch(fetchStart())
 
         try {
-            
+
             const uID = uid()
             const db = getDatabase()
 
-            set(ref(db,`${address}/`+uID),info)
+            set(ref(db, `${address}/` + uID), info)
             toastSuccessNotify('Data Added ✅')
 
         } catch (error) {
-            console.log("post userWinners",error)
+            console.log("post userWinners", error)
         }
-       
+
     }
 
-    const get_userWinners=(address)=>{
+    const get_userWinners = (address) => {
 
         dispatch(fetchStart())
+
+        try {
+
+            const db = getDatabase();
+            const starCountRef = ref(db, `${address}/`);
+            onValue(starCountRef, (snapshot) => {
+                const data = snapshot.val();
+
+                // console.log(data)
+
+                if (data == null || data == undefined) {
+                    console.log("activity user-winners data null geliyor:", data)
+                }
+                else {
+                    dispatch(fetchUserWinnersData(data))
+
+                }
+
+
+            });
+
+        } catch (error) {
+            toastErrorNotify('No Get Izo Press Data ❌')
+        }
     }
 
 
@@ -176,7 +201,8 @@ const useRaffleCall = () => {
         getFireData,
         removeFirebaseData,
         get_bonnaPersonel,
-        post_userWinners
+        post_userWinners,
+        get_userWinners
 
     }
 

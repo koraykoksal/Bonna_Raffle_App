@@ -23,8 +23,6 @@ const DeleteModals = ({ delOpen, delHandleClose, activityData, info }) => {
 
     const { removeFirebaseData, getFireData } = useRaffleCall()
 
-    console.log(info)
-
     const handleSubmit = (e) => {
         e.preventDefault()
         removeFirebaseData('bonna-activity',info)

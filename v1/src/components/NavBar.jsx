@@ -34,7 +34,7 @@ const pages = [
     url: "userapplications"
   },
   {
-    title: "Kazananlar",
+    title: "Sonuçlar",
     url: "userwinners"
   }
 ];

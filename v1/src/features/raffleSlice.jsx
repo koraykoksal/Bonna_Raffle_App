@@ -13,6 +13,7 @@ const initialState = {
     userApplyData:[],
     firebase_activityData:[],
     bonnaPersonel:[],
+    userWinners:[],
 }
 
 const raffleSlice = createSlice({
@@ -42,6 +43,10 @@ const raffleSlice = createSlice({
         fetchBonnaPersonelData:(state,{payload})=>{
             state.loading=false
             state.bonnaPersonel=payload
+        },
+        fetchUserWinnersData:(state,{payload})=>{
+            state.loading=false
+            state.userWinners=payload
         }
 
 
@@ -59,7 +64,8 @@ export const {
     fetchFail,
     fetchApplyData,
     fetchActivityData,
-    fetchBonnaPersonelData
+    fetchBonnaPersonelData,
+    fetchUserWinnersData
 
 } = raffleSlice.actions
 

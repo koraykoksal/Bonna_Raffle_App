@@ -111,10 +111,6 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
 
   ];
 
-
-
-
-
   return (
     <div>
 
