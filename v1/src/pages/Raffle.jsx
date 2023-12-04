@@ -10,22 +10,22 @@ import generateGift from "../assets/gift/generateGift.gif"
 import gif1 from "../assets/gift/gif1.gif"
 import loading from "../assets/gift/loading.gif"
 import { raffleBgPattern } from '../styles/theme'
+import { toastErrorNotify, toastWarnNotify } from '../helper/ToastNotify'
 
 const Raffle = () => {
 
 
-    const { getFireData } = useRaffleCall()
+    const { getFireData,post_userWinners } = useRaffleCall()
     const { firebase_activityData } = useSelector((state) => state.raffle)
     const [activityData, setactivityData] = useState([])
     const [info, setInfo] = useState([])
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
 
-
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
-    const yedekSayisi = 4 //index sayısı 0 dan başlayıp 12 ye kadar gittiği zaman 13 olarak sayıyor. +4 kişi eklediğinde total da 5 kişilik yedek oluşuyor.
+    const yedekSayisi = Number(katilimciSayisi) -1 //index sayısı 0 dan başlayıp 12 ye kadar gittiği zaman 13 olarak sayıyor. +4 kişi eklediğinde total da 5 kişilik yedek oluşuyor.
 
     useEffect(() => {
         getFireData('bonna-activity')
@@ -69,17 +69,29 @@ const Raffle = () => {
         e.preventDefault()
 
         if (katilimciSayisi <= 0) {
-            alert('katılımcı sayısı 0 olamaz !')
+            toastWarnNotify('Katılımcı sayısı 0 olamaz !')
         }
         else {
             setRaffleStart(true)
             currentIndex = 0;
             winners = [];
-            interval = setInterval(lottery, 10000)
+            interval = setInterval(lottery, 1000)
         }
 
 
     }
+
+    const handleSave=(e)=>{
+
+        if(!info.length > 0){
+            toastWarnNotify('Kayıt için çekiliş verisi bulunmamaktadır !')
+        }
+        else{
+            
+            post_userWinners('bonna-activity-winners',info)
+        }
+    }
+
 
 
 
@@ -112,6 +124,7 @@ const Raffle = () => {
                         value={katilimciSayisi}
                         onChange={(e) => setkatilimciSayisi(e.target.value)}
                     />
+                    <Button color='primary' variant='contained' sx={{width:'150px'}} onClick={handleSave}>Kaydet</Button>
                 </Container>
             </form>
 
@@ -125,8 +138,6 @@ const Raffle = () => {
                 (<Winners info={info} katilimciSayisi={katilimciSayisi}/>)
             }
 
-         
- 
 
         </div>
     )

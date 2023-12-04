@@ -146,6 +146,28 @@ const useRaffleCall = () => {
         }
     }
 
+    const post_userWinners=(address,info)=>{
+
+        dispatch(fetchStart())
+
+        try {
+            
+            const uID = uid()
+            const db = getDatabase()
+
+            set(ref(db,`${address}/`+uID),info)
+            toastSuccessNotify('Data Added ✅')
+
+        } catch (error) {
+            console.log("post userWinners",error)
+        }
+       
+    }
+
+    const get_userWinners=(address)=>{
+
+        dispatch(fetchStart())
+    }
 
 
     return {
@@ -153,7 +175,8 @@ const useRaffleCall = () => {
         postFireData,
         getFireData,
         removeFirebaseData,
-        get_bonnaPersonel
+        get_bonnaPersonel,
+        post_userWinners
 
     }
 

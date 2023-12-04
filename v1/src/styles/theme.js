@@ -62,7 +62,8 @@ export const detailBgPattern={
 export const raffleBgPattern={
 
   width: "100%",
-  height: "1200px",
+  height: "100%",
+  paddingBottom:"400px",
   // backgroundColor:'#2c96df',
   backgroundColor:'#4ea3de',
   backgroundImage: `url(${pattern3})`,
