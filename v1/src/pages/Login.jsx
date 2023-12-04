@@ -4,8 +4,7 @@ import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import LockIcon from "@mui/icons-material/Lock"
-// import image from "../assets/result.svg"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
@@ -13,10 +12,12 @@ import { Formik, Form } from "formik"
 import { object, string } from "yup"
 import useAuthCall from '../hooks/useAuthCall'
 import { useState } from 'react'
+import { IoHome } from "react-icons/io5";
 
 
 const Login = () => {
 
+  const navigate = useNavigate()
 
   const [info, setInfo] = useState({
     email: "",
@@ -63,7 +64,7 @@ const Login = () => {
 
     <Container maxWidth="lg" >
 
-      <Typography variant='h4' align='center' p={3} fontWeight={700} color='#ae0707'>Bonna Activity</Typography>
+      <Typography variant='h4' align='center' p={3} fontWeight={700} color='#ae0707'>Bonna Aktivite</Typography>
 
       <Grid
         container
@@ -87,18 +88,20 @@ const Login = () => {
             }}
           >
             <LockIcon size="30" />
+
           </Avatar>
-          <Typography
+          
+          {/* <Typography
             variant="h4"
             align="center"
             mb={4}
             color="secondary.light"
           >
             Login
-          </Typography>
+          </Typography> */}
 
           <form onKeyUp={handleKeyPress}>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 ,mt:5}}>
 
               <TextField
                 label="Email"
@@ -119,16 +122,17 @@ const Login = () => {
                 value={info.password}
                 onChange={handleChange}
               />
-              <Button variant="contained" type="button" onClick={handleSubmit}>
-                Submit
+              <Button variant="contained" type="button" onClick={handleSubmit} sx={{letterSpacing:3,textTransform:'none'}}>
+                Giriş
               </Button>
 
             </Box>
           </form>
 
-          {/* <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link to="/register">Don't you have an account?</Link>
-          </Box> */}
+          <Box sx={{mt: 5,display:'flex',flexDirection:'column'}}>
+            <IoHome size={30} color='green' style={{margin:'auto'}} onClick={()=>navigate('/')} cursor={'pointer'}/>
+            {/* <Link to="/" style={{color:'green',textDecoration:'underline',letterSpacing:5,textAlign:'center'}}>Ana Sayfa</Link>              */}
+          </Box>
 
         </Grid>
 

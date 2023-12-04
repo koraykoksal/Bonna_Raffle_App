@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Home } from '../pages/Home'
 import { NotFound } from '../pages/NotFound'
 import NavBar from '../components/NavBar'
-import AdminLogin from '../components/AdminLogin'
 import PrivateRouter from './PrivateRoute'
 import Login from '../pages/Login'
-import Admin from '../pages/Admin'
 import EtkinlikDetail from '../pages/EtkinlikDetail'
 import Raffle from '../pages/Raffle'
+import UserApplications from '../pages/UserApplications'
+import UserWinners from '../pages/UserWinners'
 
 
 
@@ -25,8 +25,9 @@ export const AppRouter = () => {
           <Route path='login' element={<Login />} />
           <Route path='/:id' element={<EtkinlikDetail />} />
           <Route element={<PrivateRouter />}>
-            <Route path='/admin' element={<Admin />} />
+            <Route path='/userapplications' element={<UserApplications/>} />
             <Route path='/raffle' element={<Raffle/>}/>
+            <Route path='/userwinners' element={<UserWinners/>}/>
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>

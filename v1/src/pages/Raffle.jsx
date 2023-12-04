@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import generateGift from "../assets/gift/generateGift.gif"
 import gif1 from "../assets/gift/gif1.gif"
 import loading from "../assets/gift/loading.gif"
+import { raffleBgPattern } from '../styles/theme'
 
 const Raffle = () => {
 
@@ -83,10 +84,10 @@ const Raffle = () => {
 
 
     return (
-        <div>
+        <div style={raffleBgPattern}>
 
             <Container>
-                <Typography variant='h6' align='center' p={3} color='#39A7FF' fontWeight={700}>Etkinlik Çekiliş Sayfası</Typography>
+                <Typography variant='h6' align='center' p={3} color='#ffffff' fontWeight={700}>Etkinlik Çekiliş Sayfası</Typography>
 
                 <Typography variant='subtitle2' align='center' color='#B31312'>
                     Çekiliş etkinliğe kayıt olan kişiler arasında yapılacaktır !

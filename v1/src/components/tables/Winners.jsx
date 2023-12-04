@@ -112,6 +112,7 @@ const Winners = ({ info,katilimciSayisi }) => {
                 disableRowSelectionOnClick
                 sx={{
                     boxShadow: 4,
+                    color:'#ffffff'
                 }}
             />
         </Box>

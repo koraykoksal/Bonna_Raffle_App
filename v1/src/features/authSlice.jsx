@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = {
-  currentUser: null,
+  currentUser: "",
   userID: "",
   loading: false,
   error: false,
@@ -32,7 +32,7 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.loading = false;
-      state.currentUser = null;
+      state.currentUser = "";
       state.token = null;
     },
     registerSuccess: (state, { payload }) => {

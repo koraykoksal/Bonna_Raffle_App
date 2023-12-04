@@ -1,6 +1,6 @@
 import pattern1 from "../assets/img/pattern1.png"
 import pattern2 from "../assets/img/pattern2.png"
-
+import pattern3 from "../assets/img/raffleBgColorPattern.png"
 
 export const lightTheme = {
   colors: {
@@ -54,6 +54,20 @@ export const detailBgPattern={
   backgroundImage: `url(${pattern2})`,
   backgroundPosition: "center",
   backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+
+
+}
+
+export const raffleBgPattern={
+
+  width: "100%",
+  height: "1200px",
+  // backgroundColor:'#2c96df',
+  backgroundColor:'#4ea3de',
+  backgroundImage: `url(${pattern3})`,
+  backgroundPosition: "100% 0",
+  backgroundSize: "700px",
   backgroundRepeat: "no-repeat",
 
 

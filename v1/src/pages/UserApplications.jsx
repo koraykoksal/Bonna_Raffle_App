@@ -9,7 +9,7 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 import Avtivity_Table from '../components/tables/Avtivity_Table'
 import DeleteModals from '../components/modals/DeleteModals'
 
-const Admin = () => {
+const UserApplications = () => {
 
 
   const { getFireData } = useRaffleCall()
@@ -53,4 +53,4 @@ const Admin = () => {
   )
 }
 
-export default Admin
+export default UserApplications

@@ -79,7 +79,7 @@ const Etkinliks = () => {
                             />
                             <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                
-                                <Button variant='contained' onClick={()=>navigate(`/${item.id}`,{state:item})}>Detay</Button>
+                                <Button variant='contained' onClick={()=>navigate(`/${item.id}`,{state:item})} sx={{letterSpacing:3}}>Detay</Button>
                                 <Typography variant='subtitle2' p={1}>{item.status}</Typography>
 
                             </CardActions>

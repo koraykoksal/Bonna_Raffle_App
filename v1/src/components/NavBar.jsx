@@ -20,20 +20,29 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import useAuthCall from '../hooks/useAuthCall';
 
 
-
 const pages = [
   {
-    title:"Home",
-    url:"/"
+    title: "Ana Sayfa",
+    url: "/"
   },
   {
-    title:"Raffle",
-    url:"raffle"
+    title: "Çekiliş",
+    url: "raffle"
+  },
+  {
+    title: "Başvurular",
+    url: "userapplications"
+  },
+  {
+    title: "Kazananlar",
+    url: "userwinners"
   }
 ];
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
+
 
   const { logout } = useAuthCall()
   const { currentUser } = useSelector((state) => state.auth)
@@ -57,7 +66,6 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
 
 
 
@@ -111,16 +119,15 @@ const NavBar = () => {
                       display: { xs: 'block', md: 'none' },
                     }}
                   >
-                    {pages.map((page,index) => (
-                      <MenuItem key={index} onClick={()=>{
+                    {pages.map((page, index) => (
+                      <MenuItem key={index} onClick={() => {
                         navigate(page.url)
                         handleCloseNavMenu()
                       }}>
-                        {/* <Typography textAlign="center">{page}</Typography> */}
-                        <ListItemButton>
-                        <ListItemText>{page.title}</ListItemText>
+                        <ListItemButton sx={{ textTransform: 'none' }}>
+                          <ListItemText sx={{ textTransform: 'none' }}>{page.title}</ListItemText>
                         </ListItemButton>
-                        
+
                       </MenuItem>
                     ))}
                   </Menu>
@@ -138,14 +145,14 @@ const NavBar = () => {
             currentUser ?
               (
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  {pages.map((page,index) => (
+                  {pages.map((page, index) => (
                     <Button
                       key={index}
-                      onClick={()=>{
+                      onClick={() => {
                         navigate(page.url)
                         handleCloseNavMenu()
                       }}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
+                      sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}
                     >
                       {page.title}
                     </Button>
@@ -190,12 +197,17 @@ const NavBar = () => {
             </Menu>
           </Box> */}
 
+
           <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
+            
             {
-              currentUser && (<Typography>{currentUser || null}</Typography>)
-            }
-            {
-              currentUser && (<RiLogoutCircleRLine size={22} color='#B31312' cursor='pointer' onClick={() => logout()} />)
+              currentUser ? 
+              (<Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
+                <Typography>{currentUser || null}</Typography>
+                <RiLogoutCircleRLine size={22} color='#B31312' cursor='pointer' onClick={() => logout()} />
+              </Box>)
+              :
+              (<Button variant='contained' onClick={()=>navigate('/login')} sx={{textTransform:'none',letterSpacing:3}}>Giriş</Button>)
             }
           </Box>
 
