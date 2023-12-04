@@ -28,7 +28,7 @@ const Etkinliks = () => {
     const navigate = useNavigate()
 
     const [info, setInfo] = useState({
-        userID:uid(),
+        userID: uid(),
         tcNo: "",
         name: "",
         surname: "",
@@ -43,7 +43,7 @@ const Etkinliks = () => {
     const handleClose = () => {
         setOpen(false)
         setInfo({
-            userID:uid(),
+            userID: uid(),
             tcNo: "",
             name: "",
             surname: "",
@@ -62,7 +62,7 @@ const Etkinliks = () => {
 
         <>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', gap: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 4 }}>
 
                 {
                     activityInfo.map((item, index) => (
@@ -78,9 +78,13 @@ const Etkinliks = () => {
                                 image={item.image}
                             />
                             <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                               
-                                <Button variant='contained' onClick={()=>navigate(`/${item.id}`,{state:item})} sx={{letterSpacing:3}}>Detay</Button>
-                                <Typography variant='subtitle2' p={1}>{item.status}</Typography>
+
+                                {
+                                    item.status ?
+                                        (<Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: item })} sx={{ letterSpacing: 3 }}>Detay</Button>)
+                                        :
+                                        ("")
+                                }
 
                             </CardActions>
 
@@ -92,8 +96,8 @@ const Etkinliks = () => {
                     ))
                 }
 
-             
-                
+
+
             </Box>
 
         </>
