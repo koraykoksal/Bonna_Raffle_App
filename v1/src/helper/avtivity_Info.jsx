@@ -8,7 +8,7 @@ export const activityInfo = [
         name: 'Çok Güzel Hareketler 2',
         date: '10.12.2023',
         image:cokguzelhareketler2,
-        status: true
+        status: false
 
     },
 
