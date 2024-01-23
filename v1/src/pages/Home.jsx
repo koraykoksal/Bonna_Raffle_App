@@ -12,43 +12,13 @@ import { homeBgPattern } from '../styles/theme';
 
 export const Home = () => {
 
-
-  const { getFireData } = useRaffleCall()
-  const { firebase_activityData } = useSelector((state) => state.raffle)
+  const { getFireData,get_bonnaPersonel,get_userWinners } = useRaffleCall()
 
   useEffect(() => {
     getFireData('bonna-activity')
+    get_userWinners('bonna-activity-winners')
+    get_bonnaPersonel()
   }, [])
-
-
-
-  const [info, setInfo] = useState({
-    tcNo: "",
-    name: "",
-    surname: "",
-    phone: "",
-    department: "",
-    activityName: activityInfo.name,
-    activityDate: activityInfo.date
-  })
-
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false)
-    setInfo({
-      tcNo: "",
-      name: "",
-      surname: "",
-      phone: "",
-      department: "",
-      birthday: "",
-      activityName: activityInfo.name,
-      activityDate: activityInfo.date
-
-    })
-  }
-
 
 
 

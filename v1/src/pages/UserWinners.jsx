@@ -49,6 +49,8 @@ const UserWinners = () => {
   }, [userWinners])
 
 
+  console.log(winnersData)
+
   return (
 
     <div>

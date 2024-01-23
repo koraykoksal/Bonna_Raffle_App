@@ -27,6 +27,14 @@ const Winners = ({ info,katilimciSayisi,setdata }) => {
             flex: 1,
         },
         {
+            field: "tesis",
+            headerName: "Tesis",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+        },
+        {
             field: "name",
             headerName: "Ad",
             minWidth: 150,
@@ -75,6 +83,14 @@ const Winners = ({ info,katilimciSayisi,setdata }) => {
             align: "center",
             flex: 1,
         },
+        {
+            field: "activityYear",
+            headerName: "Aktivite Yılı",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+          },
 
 
     ];
@@ -96,13 +112,11 @@ const Winners = ({ info,katilimciSayisi,setdata }) => {
 
     return (
 
-
-
-
         <Box p={3} mb={5}>
             <DataGrid
                 columns={dataGrid_Columns}
                 rows={result}
+                // getRowId={(row) => row.id}
                 initialState={{
                     pagination: {
                         paginationModel: {

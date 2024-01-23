@@ -38,6 +38,14 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
       flex: 1,
     },
     {
+      field: "tesis",
+      headerName: "Tesis",
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
       field: "name",
       headerName: "Ad",
       minWidth: 150,
@@ -64,6 +72,14 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
     {
       field: "department",
       headerName: "Departman",
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "activityYear",
+      headerName: "Aktivite Yılı",
       minWidth: 150,
       headerAlign: "center",
       align: "center",

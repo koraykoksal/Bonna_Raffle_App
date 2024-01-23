@@ -12,7 +12,8 @@ const EtkinlikDetail = () => {
 
     const navigate = useNavigate()
     const {get_bonnaPersonel}=useRaffleCall()
-
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()+1
     const { id } = useParams()
     const { state } = useLocation()
 
@@ -22,6 +23,10 @@ const EtkinlikDetail = () => {
         surname: "",
         phone: "",
         department: "",
+        birthday: "",
+        tesis:"",
+        activityYear:currentYear,
+        activityMonth:currentMonth,
         activityName: state.name,
         activityDate: state.date
     })
@@ -37,6 +42,8 @@ const EtkinlikDetail = () => {
             phone: "",
             department: "",
             birthday: "",
+            tesis:"",
+            activityYear:currentYear,
             activityName: state.name,
             activityDate: state.date
 
@@ -48,7 +55,6 @@ const EtkinlikDetail = () => {
       get_bonnaPersonel()
     }, [])
     
-
 
     return (
         <div style={detailBgPattern}>

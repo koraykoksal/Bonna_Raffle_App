@@ -27,34 +27,34 @@ const Etkinliks = () => {
 
     const navigate = useNavigate()
 
-    const [info, setInfo] = useState({
-        userID: uid(),
-        tcNo: "",
-        name: "",
-        surname: "",
-        phone: "",
-        department: "",
-        activityName: activityInfo.name,
-        activityDate: activityInfo.date
-    })
+    //const [info, setInfo] = useState({
+    //     userID: uid(),
+    //     tcNo: "",
+    //     name: "",
+    //     surname: "",
+    //     phone: "",
+    //     department: "",
+    //     activityName: activityInfo.name,
+    //     activityDate: activityInfo.date
+    // })
 
-    const [open, setOpen] = useState(false)
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false)
-        setInfo({
-            userID: uid(),
-            tcNo: "",
-            name: "",
-            surname: "",
-            phone: "",
-            department: "",
-            birthday: "",
-            activityName: activityInfo.name,
-            activityDate: activityInfo.date
+    // const [open, setOpen] = useState(false)
+    // const handleOpen = () => setOpen(true);
+    // const handleClose = () => {
+    //     setOpen(false)
+    //     setInfo({
+    //         userID: uid(),
+    //         tcNo: "",
+    //         name: "",
+    //         surname: "",
+    //         phone: "",
+    //         department: "",
+    //         birthday: "",
+    //         activityName: activityInfo.name,
+    //         activityDate: activityInfo.date
 
-        })
-    }
+    //     })
+    // }
 
 
 
@@ -82,6 +82,13 @@ const Etkinliks = () => {
                                 {
                                     item.status ?
                                         (<Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: item })} sx={{ letterSpacing: 3 }}>Detay</Button>)
+                                        :
+                                        ("")
+                                }
+
+                                {
+                                    item.status ?
+                                        (<Typography variant='h6' fontWeight={700}>Aktif</Typography>)
                                         :
                                         ("")
                                 }

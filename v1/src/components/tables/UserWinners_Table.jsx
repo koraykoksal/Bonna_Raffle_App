@@ -2,7 +2,7 @@ import React from 'react'
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 
 
-const UserWinners_Table = ({winnersData}) => {
+const UserWinners_Table = ({ winnersData }) => {
 
     const dataGrid_Columns = [
         {
@@ -16,6 +16,14 @@ const UserWinners_Table = ({winnersData}) => {
         {
             field: "rowNumber",
             headerName: "Numara",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+        },
+        {
+            field: "tesis",
+            headerName: "Tesis",
             minWidth: 150,
             headerAlign: "center",
             align: "center",
@@ -70,6 +78,14 @@ const UserWinners_Table = ({winnersData}) => {
             align: "center",
             flex: 1,
         },
+        {
+            field: "activityYear",
+            headerName: "Aktivite Yılı",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+          },
 
 
     ];

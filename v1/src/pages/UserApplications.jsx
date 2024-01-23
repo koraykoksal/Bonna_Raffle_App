@@ -35,15 +35,16 @@ const UserApplications = () => {
   }, [firebase_activityData])
 
 
+
   return (
     <div>
 
 
       <Box sx={{ p: 5 }}>
 
-        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo}/>
+        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} />
 
-        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} activityData={activityData} info={info}/>
+        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} activityData={activityData} info={info} />
 
       </Box>
 

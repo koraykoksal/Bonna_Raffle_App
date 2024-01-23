@@ -23,3 +23,10 @@ export const bonnaDepartments=[
     {name: "Üretim"},
     {name: "Yurtiçi Satış"}
 ]
+
+
+export const tesis=[
+    "Çayırova",
+    "Pazaryeri",
+    "Pendik"
+]

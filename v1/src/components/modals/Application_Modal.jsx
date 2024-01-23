@@ -11,10 +11,9 @@ import Select from '@mui/material/Select';
 import Textarea from '@mui/joy/Textarea';
 import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { bonnaDepartments } from "../../helper/bonna_departments"
+import { bonnaDepartments, tesis } from "../../helper/bonna_departments"
 import useRaffleCall from '../../hooks/useRaffleCall';
 import { useNavigate } from "react-router-dom"
-
 
 const style = {
   position: 'absolute',
@@ -44,7 +43,6 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
     e.preventDefault()
 
-    // postFireData(`bonna-activity/${info.activityName}`, info)
     postFireData(`bonna-activity`, info)
 
     handleClose()
@@ -83,7 +81,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
           </Box>
 
 
-          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2, overflow: 'scroll', maxHeight: '600px' }} component='form' onSubmit={handleSubmit}>
+          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 4, overflow: 'scroll', maxHeight: '600px' }} component='form' onSubmit={handleSubmit}>
 
 
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
@@ -155,7 +153,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
                 <InputLabel id="department">Departman</InputLabel>
                 <Select
                   required
-                  labelId="reddepartmentkabul"
+                  labelId="department"
                   id="department"
                   name='department'
                   label="Departman"
@@ -171,6 +169,26 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
                 </Select>
               </FormControl>
             </Box>
+
+
+            <FormControl fullWidth>
+              <InputLabel id="tesis">Tesis</InputLabel>
+              <Select
+                required
+                labelId="tesis"
+                id="tesis"
+                name='tesis'
+                label="tesis"
+                value={info.tesis}
+                onChange={handleChange}
+              >
+                {
+                  tesis.map((item, index) => (
+                    <MenuItem key={index} value={item}>{item}</MenuItem>
+                  ))
+                }
+              </Select>
+            </FormControl>
 
 
             <Button
@@ -190,7 +208,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
         </Box>
       </Modal>
 
-     
+
 
     </div>
   )
