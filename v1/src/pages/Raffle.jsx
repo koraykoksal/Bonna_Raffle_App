@@ -46,7 +46,7 @@ const Raffle = () => {
 
         // Status değeri true olanları filtrele
         const activeActivities = activityInfo.filter(info => info.status);
-        
+
         // Eşleşenleri bul
         const matchedActivities = data.filter(data => {
             return activeActivities.some(activity => activity.name === data.activityName);
@@ -64,7 +64,14 @@ const Raffle = () => {
         if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
 
             const dataIndex = Math.floor(Math.random() * activityData.length)
+
             const selected = activityData.splice(dataIndex, 1)[0]; // Seçilen öğeyi al ve listeden çıkar
+            if (selected === undefined) {
+                console.error("Hata: Seçilen öğe bulunamadı.");
+                // İsteğe bağlı olarak burada da kullanıcıya bir mesaj gösterebilirsiniz.
+                return;
+            }
+
             setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
 
             currentIndex++;
@@ -85,16 +92,17 @@ const Raffle = () => {
         }
         else {
 
-            if(activityData.length>0){
+            if (activityData.length > 0) {
+
                 setRaffleStart(true)
                 currentIndex = 0;
                 winners = [];
                 interval = setInterval(lottery, cekilisSuresi)
             }
-            else{
+            else {
                 toastWarnNotify('Çekiliş için veri kaynağı bulunamadı !')
             }
-            
+
         }
 
 
