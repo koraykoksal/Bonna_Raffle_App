@@ -47,32 +47,25 @@ const useRaffleCall = () => {
 
                 //! bir sonraki aktivite de burayı güncelleme ve activity:2024 (current year bilgisini getir)
                 const winnersDizi = Object.values(userWinners).reduce((acc, current) => acc.concat(current), []);
-                
+
                 //?* kazananlar listesinde ki kişinin tcNo eşlemesi ve Asil listesinde olup olmadığına bakar
-                const isWin = winnersDizi.some(winner => winner.tcNo === info.tcNo && winner.status == 'Asil');
+                // const isWin = winnersDizi.some(winner => winner.tcNo === info.tcNo && winner.status == 'Asil');
 
 
-                if (isWin) {
-                    toastErrorNotify(`${info.tcNo} kimlik nuraması aktivite limitini doldurmuştur.`)
+                // const dizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
+
+                const sameData = activityDataDizi.find((item) => item.tcNo === info.tcNo && item.activityName == info.activityName);
+
+                if (sameData) {
+                    toastErrorNotify(`${info.tcNo} kimlik nuraması ile kayıt bulunmaktadır. Tekrar kayıt yapamazsınız !`)
                 }
                 else {
 
-                    // const dizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
-
-                    const sameData = activityDataDizi.find((item) => item.tcNo === info.tcNo && item.activityName == info.activityName);
-
-                    if (sameData) {
-                        toastErrorNotify(`${info.tcNo} kimlik nuraması ile kayıt bulunmaktadır. Tekrar kayıt yapamazsınız !`)
-                    }
-                    else {
-
-                        const uID = uid()
-                        const db = getDatabase();
-                        set(ref(db, `${address}/` + uID), info);
-                        toastSuccessNotify('Başvuru Yapıldı')
-                        navigate('/')
-                    }
-
+                    const uID = uid()
+                    const db = getDatabase();
+                    set(ref(db, `${address}/` + uID), info);
+                    toastSuccessNotify('Başvuru Yapıldı')
+                    navigate('/')
                 }
 
             }
