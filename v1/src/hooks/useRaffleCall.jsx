@@ -257,6 +257,13 @@ const useRaffleCall = () => {
     }
 
 
+    const postActivityData=(data)=>{
+
+        
+    }
+
+
+
     return {
 
         postFireData,

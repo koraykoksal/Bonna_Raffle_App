@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Container, IconButton, TextField, TextareaAutosize } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { IoIosCloseCircle } from "react-icons/io";
-
+import { useState } from 'react';
 
 const style = {
     position: 'absolute',
@@ -14,7 +14,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 450,
-    height: 500,
+    height: 'auto',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -24,7 +24,9 @@ const style = {
 
 
 
-const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleSubmit }) => {
+const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFileChange, handleSubmit }) => {
+
+
     return (
         <div>
             <Modal
@@ -38,12 +40,12 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleSub
             >
                 <Box sx={style}>
 
-                    <IoIosCloseCircle size={25} color='red' cursor={'pointer'} onClick={handleClose}/>
+                    <IoIosCloseCircle size={25} color='red' cursor={'pointer'} onClick={handleClose} />
 
                     <Typography variant='subtitle1' align='center'>Yeni Etkinlik Kaydı</Typography>
-                    
 
-                    <Box sx={{ display: 'flex', flexDirection:'column', gap: 5,mt:5 }} component={'form'}>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, mt: 5 }} component={'form'}>
 
 
                         <TextField
@@ -55,7 +57,7 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleSub
                             type="text"
                             variant="outlined"
                             inputProps={{ maxLength: 11 }}
-                            value={info.activityName}
+                            // value={info.activityName}
                             onChange={handleChange}
                         />
 
@@ -68,7 +70,7 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleSub
                             type="date"
                             variant="outlined"
                             inputProps={{ maxLength: 30 }}
-                            value={info.activityDate}
+                            // value={info.activityDate}
                             onChange={handleChange}
                         />
 
@@ -82,8 +84,20 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleSub
                             type="number"
                             variant="outlined"
                             inputProps={{ maxLength: 30 }}
-                            value={info.members}
+                            // value={info.members}
                             onChange={handleChange}
+                        />
+
+                        <TextField
+                            required
+                            fullWidth
+                            name="activityImage"
+                            id="activityImage"
+                            type="file"
+                            variant="outlined"
+                            inputProps={{ maxLength: 30 }}
+                            // value={info.activityImage}
+                            onChange={handleFileChange}
                         />
 
                         <Button variant='contained' onSubmit={handleSubmit}>Kaydet</Button>

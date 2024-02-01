@@ -105,7 +105,8 @@ const useAuthCall = () => {
                 userdata.password
             );
             dispatch(loginSuccess(userCredential?.user))
-            navigate("/userapplications");
+            // navigate("/userapplications");
+            navigate("/");
             toastSuccessNotify("Logged in successfully!");
             console.log(userCredential);
 

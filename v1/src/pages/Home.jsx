@@ -25,10 +25,23 @@ export const Home = () => {
 
   const handleChange = (e) => {
 
-    setInfo({ ...info, [e.target.name]: e.target.value })
+    const {name,value} = e.target
+    setInfo({...info,[name]:value})
+    
+  }
+  
+  const handleFileChange=(e)=>{
+
+    const filename = e.target.files[0].name
+
+    if(e.target.files[0].name){
+      setInfo(prevInfo=>({
+        ...prevInfo,
+        activityImage:filename
+      }))
+    }
 
   }
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -64,6 +77,10 @@ export const Home = () => {
   }
 
 
+  console.log(info)
+
+
+
   return (
 
     <div style={homeBgPattern}>
@@ -86,7 +103,7 @@ export const Home = () => {
 
       </Box>
 
-      <NewActivity info={info} setInfo={setInfo} open={open} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <NewActivity info={info} setInfo={setInfo} open={open} handleClose={handleClose} handleChange={handleChange} handleFileChange={handleFileChange} handleSubmit={handleSubmit} />
 
     </div>
 
