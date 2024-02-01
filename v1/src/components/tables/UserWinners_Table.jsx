@@ -4,6 +4,7 @@ import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 
 const UserWinners_Table = ({ winnersData }) => {
 
+
     const dataGrid_Columns = [
         {
             field: "id",
@@ -16,7 +17,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "rowNumber",
             headerName: "Numara",
-            minWidth: 150,
+            minWidth: 80,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -24,7 +25,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "tesis",
             headerName: "Tesis",
-            minWidth: 150,
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -32,7 +33,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "name",
             headerName: "Ad",
-            minWidth: 150,
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -41,7 +42,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "surname",
             headerName: "Soyad",
-            minWidth: 150,
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -49,7 +50,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "department",
             headerName: "Departman",
-            minWidth: 150,
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -57,7 +58,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "phone",
             headerName: "Telefon",
-            minWidth: 150,
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -65,7 +66,7 @@ const UserWinners_Table = ({ winnersData }) => {
         {
             field: "status",
             headerName: "Durum",
-            minWidth: 150,
+            minWidth: 80,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -79,9 +80,9 @@ const UserWinners_Table = ({ winnersData }) => {
             flex: 1,
         },
         {
-            field: "activityYear",
-            headerName: "Aktivite Yılı",
-            minWidth: 150,
+            field: "activityDate",
+            headerName: "Aktivite Tarihi",
+            minWidth: 100,
             headerAlign: "center",
             align: "center",
             flex: 1,
@@ -100,7 +101,7 @@ const UserWinners_Table = ({ winnersData }) => {
                 initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 25,
+                            pageSize: 10,
                         },
                     },
                 }}

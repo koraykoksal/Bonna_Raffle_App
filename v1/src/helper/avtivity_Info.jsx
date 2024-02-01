@@ -18,7 +18,7 @@ export const activityInfo = [
         name: 'Selda Bağcan',
         date: '28.01.2024',
         image:seldabagcan,
-        status: true
+        status: false
 
     },
 

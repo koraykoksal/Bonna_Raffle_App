@@ -38,7 +38,8 @@ const UserWinners = () => {
             department: person.department,
             activityName:person.activityName,
             rowNumber:person.rowNumber,
-            status:person.status
+            status:person.status,
+            tesis:person.tesis
           });
         }
       });
@@ -49,7 +50,6 @@ const UserWinners = () => {
   }, [userWinners])
 
 
-  console.log(winnersData)
 
   return (
 

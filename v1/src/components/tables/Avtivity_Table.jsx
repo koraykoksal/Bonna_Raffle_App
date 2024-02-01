@@ -28,19 +28,10 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
       align: "center",
       flex: 1,
     },
-
-    {
-      field: "activityDate",
-      headerName: "Tarih",
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-    },
     {
       field: "tesis",
       headerName: "Tesis",
-      minWidth: 150,
+      minWidth: 90,
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -48,7 +39,7 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
     {
       field: "name",
       headerName: "Ad",
-      minWidth: 150,
+      minWidth: 100,
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -56,7 +47,7 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
     {
       field: "surname",
       headerName: "Soyad",
-      minWidth: 150,
+      minWidth: 100,
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -78,9 +69,9 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
       flex: 1,
     },
     {
-      field: "activityYear",
-      headerName: "Aktivite Yılı",
-      minWidth: 150,
+      field: "activityDate",
+      headerName: "Aktivite Tarihi",
+      minWidth: 100,
       headerAlign: "center",
       align: "center",
       flex: 1,
@@ -101,29 +92,10 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
             delHandleOpen()
             setInfo(params.id)
           }}
-          
-          // showInMenu
+        
         />,
       ],
     },
-    // {
-    //   field: "actions",
-    //   headerName: "#",
-    //   minWidth: 120,
-    //   headerAlign: "center",
-    //   align: "center",
-    //   flex: 1,
-    //   renderCell: ({id}) => {
-    //     return[
-    //       <GridActionsCellItem
-    //       key={"delete"}
-    //       icon={<MdDelete size={25} style={{ color: '#D80032' }} cursor='pointer' />}
-    //       label="Delete"
-          
-    //     />,
-    //     ]
-    //   }
-    // },
 
   ];
 
@@ -136,7 +108,7 @@ const Avtivity_Table = ({ activityData, delHandleOpen,setInfo}) => {
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 25,
+              pageSize: 10,
             },
           },
         }}

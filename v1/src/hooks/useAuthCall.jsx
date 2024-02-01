@@ -107,7 +107,7 @@ const useAuthCall = () => {
             dispatch(loginSuccess(userCredential?.user))
             navigate("/userapplications");
             toastSuccessNotify("Logged in successfully!");
-            // console.log(userCredential);
+            console.log(userCredential);
 
         } catch (error) {
             toastErrorNotify(error.message);
@@ -126,9 +126,7 @@ const useAuthCall = () => {
 
 
 
-    return {
-        // signUp, 
-        // signIn, 
+    return { 
         login,
         logout
     }

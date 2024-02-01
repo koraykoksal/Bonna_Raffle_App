@@ -8,11 +8,13 @@ import { useSelector } from 'react-redux';
 import cokguzelhareketler2 from "../assets/etkinlik/cokguzelhareketler2.png"
 import Etkinliks from '../components/Etkinliks';
 import { homeBgPattern } from '../styles/theme';
+import NewActivity from '../components/modals/NewActivity';
 
 
 export const Home = () => {
 
-  const { getFireData,get_bonnaPersonel,get_userWinners } = useRaffleCall()
+  const { getFireData, get_bonnaPersonel, get_userWinners } = useRaffleCall()
+  const { token } = useSelector((state) => state.auth)
 
   useEffect(() => {
     getFireData('bonna-activity')
@@ -21,22 +23,70 @@ export const Home = () => {
   }, [])
 
 
+  const handleChange = (e) => {
+
+    setInfo({ ...info, [e.target.name]: e.target.value })
+
+  }
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    setInfo({
+      activityName: "",
+      activityDate: "",
+      activityImage: "",
+      members: ""
+    })
+
+  }
+
+  const [info, setInfo] = useState({
+    activityName: "",
+    activityDate: "",
+    activityImage: "",
+    members: ""
+
+  })
+
+
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+    setInfo({
+      activityName: "",
+      activityDate: "",
+      activityImage: "",
+      members: ""
+    })
+  }
+
 
   return (
 
     <div style={homeBgPattern}>
 
-      <Box >
+      <Box>
 
 
-        <Box sx={{ display: 'flex', justifyContent: 'center',flexWrap:'wrap', py: 5, gap: 5 }}>
+        {
+          token && <Container sx={{ py: 5 }}>
+            <Button sx={{ textTransform: 'none' }} variant='contained' onClick={handleOpen}>Yeni</Button>
+          </Container>
+        }
+
+
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', py: 5, gap: 5 }}>
           <Etkinliks />
         </Box>
 
 
       </Box>
 
-
+      <NewActivity info={info} setInfo={setInfo} open={open} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} />
 
     </div>
 
