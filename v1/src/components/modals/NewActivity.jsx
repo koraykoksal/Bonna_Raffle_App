@@ -40,9 +40,9 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFile
             >
                 <Box sx={style}>
 
-                    <IoIosCloseCircle size={25} color='red' cursor={'pointer'} onClick={handleClose} />
+                    <IoIosCloseCircle size={28} color='red' cursor={'pointer'} onClick={handleClose} />
 
-                    <Typography variant='subtitle1' align='center'>Yeni Etkinlik Kaydı</Typography>
+                    <Typography variant='subtitle1' align='center' fontWeight={700}>Yeni Etkinlik Kaydı</Typography>
 
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, mt: 5 }} component={'form'}>

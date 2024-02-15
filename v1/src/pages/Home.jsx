@@ -16,6 +16,7 @@ export const Home = () => {
   const { getFireData, get_bonnaPersonel, get_userWinners } = useRaffleCall()
   const { token } = useSelector((state) => state.auth)
 
+  
   useEffect(() => {
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
@@ -24,10 +25,8 @@ export const Home = () => {
 
 
   const handleChange = (e) => {
-
     const {name,value} = e.target
     setInfo({...info,[name]:value})
-    
   }
   
   const handleFileChange=(e)=>{
@@ -43,6 +42,7 @@ export const Home = () => {
 
   }
 
+  //kayıt işlemi yap
   const handleSubmit = (e) => {
     e.preventDefault()
 

@@ -34,19 +34,19 @@ const useRaffleCall = () => {
 
         try {
 
-            // await get_bonnaPersonel() // bonna personel datasını çek
+            await get_bonnaPersonel() // bonna personel datasını çek
             // await getFireData('bonna-activity') // başvuru listesini çek
             // await get_userWinners('bonna-activity-winners') // kazananlar lisesini çek
 
             //?* personel var mı kontrol et
-            const findPersonel = bonnaPersonel.find((item) => item.TCKIMLIKNO == info.tcNo)
+            const findPersonel = bonnaPersonel?.find((item) => item.TCKIMLIKNO == info.tcNo)
 
             if (findPersonel) {
 
                 const activityDataDizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
                 //! bir sonraki aktivite de burayı güncelleme ve activity:2024 (current year bilgisini getir)
-                const winnersDizi = Object.values(userWinners).reduce((acc, current) => acc.concat(current), []);
+                // const winnersDizi = Object.values(userWinners).reduce((acc, current) => acc.concat(current), []);
 
                 //?* kazananlar listesinde ki kişinin tcNo eşlemesi ve Asil listesinde olup olmadığına bakar
                 // const isWin = winnersDizi.some(winner => winner.tcNo === info.tcNo && winner.status == 'Asil');
@@ -164,19 +164,17 @@ const useRaffleCall = () => {
         try {
 
             const options = {
-                method: 'GET',
+                method: 'POST',
                 url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
                 headers: {
-                    'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`
+                    'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`,
+                    'PYEAR': year
 
                 }
             }
 
             const res = await axios(options)
             dispatch(fetchBonnaPersonelData(res?.data))
-
-            // const res = bonnaPersonels.map((item) => item)
-            // dispatch(fetchBonnaPersonelData(res))
 
         } catch (error) {
             console.log("get_bonnaPersonel: ", error)
@@ -257,10 +255,6 @@ const useRaffleCall = () => {
     }
 
 
-    const postActivityData=(data)=>{
-
-        
-    }
 
 
 

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import useRaffleCall from '../hooks/useRaffleCall'
@@ -39,8 +39,12 @@ const UserApplications = () => {
   return (
     <div>
 
+      <Typography variant='h6' align='center' p={3} color='#AB232B' fontWeight={700}>Başvurular</Typography>
+
 
       <Box sx={{ p: 5 }}>
+
+
 
         <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} />
 
