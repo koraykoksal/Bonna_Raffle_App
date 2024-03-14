@@ -54,6 +54,7 @@ const Etkinliks = () => {
                             <CardMedia
                                 component="img"
                                 height="350"
+                                loading='lazy'
                                 image={item.image}
                             />
                             <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
