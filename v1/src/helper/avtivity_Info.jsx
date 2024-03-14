@@ -1,6 +1,7 @@
 import cokguzelhareketler2 from "../assets/etkinlik/cokguzelhareketler2.png"
 import seldabagcan from "../assets/etkinlik/seldabagcan.png"
 import denizgoktas from "../assets/etkinlik/denizgoktas.png"
+import bernarda from "../assets/etkinlik/bernarda.png"
 
 
 import { uid } from "uid";
@@ -29,6 +30,14 @@ export const activityInfo = [
         name: 'Deniz Göktaş',
         date: '23.02.2024',
         image:denizgoktas,
+        status: false
+
+    },
+    {
+        id:uid(),
+        name: 'Bernarda',
+        date: '29.03.2024',
+        image:bernarda,
         status: true
 
     },

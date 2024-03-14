@@ -27,36 +27,6 @@ const Etkinliks = () => {
 
     const navigate = useNavigate()
 
-    //const [info, setInfo] = useState({
-    //     userID: uid(),
-    //     tcNo: "",
-    //     name: "",
-    //     surname: "",
-    //     phone: "",
-    //     department: "",
-    //     activityName: activityInfo.name,
-    //     activityDate: activityInfo.date
-    // })
-
-    // const [open, setOpen] = useState(false)
-    // const handleOpen = () => setOpen(true);
-    // const handleClose = () => {
-    //     setOpen(false)
-    //     setInfo({
-    //         userID: uid(),
-    //         tcNo: "",
-    //         name: "",
-    //         surname: "",
-    //         phone: "",
-    //         department: "",
-    //         birthday: "",
-    //         activityName: activityInfo.name,
-    //         activityDate: activityInfo.date
-
-    //     })
-    // }
-
-
 
     return (
 
@@ -65,7 +35,16 @@ const Etkinliks = () => {
             <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 4 }}>
 
                 {
-                    activityInfo.map((item, index) => (
+                    // etkinlik datasını tarih bilgisine göre sıralama yap
+                    // split : '.' dan ayır ve dizi formatına dönüştür ['03','02','2024']
+                    // reverse : dizi elemanlarının sırasını tersine çevir
+                    // join : '-' işareti ile veriyi 2024-02-03 formatına çevir
+                    activityInfo.sort((a, b) => {
+                        const dateA = new Date(a.date.split('.').reverse().join('-'))
+                        const dateB = new Date(b.date.split('.').reverse().join('-'))
+                        return dateB - dateA
+
+                    }).map((item, index) => (
 
                         <Card key={index} sx={{ maxWidth: 350 }}>
                             <CardContent>

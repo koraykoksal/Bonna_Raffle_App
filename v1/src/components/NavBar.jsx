@@ -201,13 +201,13 @@ const NavBar = () => {
           <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
             
             {
-              currentUser ? 
-              (<Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
+              currentUser && 
+              <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
                 <Typography>{currentUser || null}</Typography>
                 <RiLogoutCircleRLine size={22} color='#B31312' cursor='pointer' onClick={() => logout()} />
-              </Box>)
-              :
-              (<Button variant='contained' onClick={()=>navigate('/login')} sx={{textTransform:'none',letterSpacing:3}}>Giriş</Button>)
+              </Box>
+              
+              // <Button variant='contained' onClick={()=>navigate('/login')} sx={{textTransform:'none',letterSpacing:3}}>Giriş</Button>
             }
           </Box>
 

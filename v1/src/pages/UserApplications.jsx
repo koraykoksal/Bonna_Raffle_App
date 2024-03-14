@@ -30,6 +30,12 @@ const UserApplications = () => {
 
     const data = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
+    // başvuru listesinde etkinlik tarihi en son olanı listenin en üstünde göster
+    data.sort((a,b)=>{
+      const dateA = new Date(a.activityDate.split('.').reverse().join('-'))
+      const dateB = new Date(b.activityDate.split('.').reverse().join('-'))
+      return dateB-dateA
+    })
     setactivityData(data)
 
   }, [firebase_activityData])
@@ -43,8 +49,6 @@ const UserApplications = () => {
 
 
       <Box sx={{ p: 5 }}>
-
-
 
         <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} />
 

@@ -34,12 +34,12 @@ const useRaffleCall = () => {
 
         try {
 
-            await get_bonnaPersonel() // bonna personel datasını çek
+            // await get_bonnaPersonel() // bonna personel datasını çek
             // await getFireData('bonna-activity') // başvuru listesini çek
             // await get_userWinners('bonna-activity-winners') // kazananlar lisesini çek
 
             //?* personel var mı kontrol et
-            const findPersonel = bonnaPersonel?.find((item) => item.TCKIMLIKNO == info.tcNo)
+            const findPersonel = bonnaPersonels?.find((item) => item.TCKIMLIKNO == info.tcNo)
 
             if (findPersonel) {
 
@@ -174,7 +174,15 @@ const useRaffleCall = () => {
             }
 
             const res = await axios(options)
-            dispatch(fetchBonnaPersonelData(res?.data))
+            const data = res?.data.map((item)=>{
+                return{
+                    NAME:item.NAME,
+                    SURNAME:item.SURNAME,
+                    TCKIMLIKNO:item.TCKIMLIKNO
+                }
+            })
+   
+            dispatch(fetchBonnaPersonelData(data))
 
         } catch (error) {
             console.log("get_bonnaPersonel: ", error)
