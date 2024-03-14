@@ -7,8 +7,6 @@ import { useEffect,useState } from 'react';
 
 const Winners = ({ info,katilimciSayisi,setdata }) => {
 
-    console.log(info)
-
     const [result, setResult] = useState([])
 
     const dataGrid_Columns = [
