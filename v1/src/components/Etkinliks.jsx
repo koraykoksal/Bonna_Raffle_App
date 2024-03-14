@@ -32,7 +32,7 @@ const Etkinliks = () => {
 
         <>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 10 }}>
 
                 {
                     // etkinlik datasını tarih bilgisine göre sıralama yap
