@@ -26,7 +26,7 @@ const Raffle = () => {
 
     const [data, setdata] = useState([])
 
-    const cekilisSuresi = 10000
+    const cekilisSuresi = 1000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
@@ -59,30 +59,72 @@ const Raffle = () => {
 
 
     //? çekilişi başlat
+    // const lottery = () => {
+
+    //     if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
+
+    //         const dataIndex = Math.floor(Math.random() * activityData.length)
+
+    //         const selected = activityData.splice(dataIndex, 1)[0]; // Seçilen öğeyi al ve listeden çıkar
+
+    //         if (selected === undefined) {
+    //             console.error("Hata: Seçilen öğe bulunamadı.");
+    //             // İsteğe bağlı olarak burada da kullanıcıya bir mesaj gösterebilirsiniz.
+    //             return;
+    //         }
+
+
+
+    //         setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
+
+    //         currentIndex++;
+    //         setRaffleStart(false)
+    //     }
+    //     else {
+    //         clearInterval(interval)
+    //     }
+
+
+    // }
+
+    let pazaryeriSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
+
     const lottery = () => {
-
         if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
-
-            const dataIndex = Math.floor(Math.random() * activityData.length)
-
-            const selected = activityData.splice(dataIndex, 1)[0]; // Seçilen öğeyi al ve listeden çıkar
-            if (selected === undefined) {
-                console.error("Hata: Seçilen öğe bulunamadı.");
-                // İsteğe bağlı olarak burada da kullanıcıya bir mesaj gösterebilirsiniz.
+            if (activityData.length === 0) {
+                console.error("Hata: Seçilecek öğe kalmadı.");
+                clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
                 return;
             }
 
+            let selected;
+            let dataIndex; // dataIndex'i döngü dışında tanımla
+            do {
+                dataIndex = Math.floor(Math.random() * activityData.length); // dataIndex'i burada ata
+                selected = activityData[dataIndex]; // Potansiyel seçilen öğe
+
+                if (selected.tesis === "Pazaryeri") {
+                    if (pazaryeriSelections >= 10) {
+                        continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+                    } else {
+                        pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
+                        break; // Uygun öğe bulundu
+                    }
+                } else {
+                    break; // "Pazaryeri" dışında bir tesis, doğrudan kabul et
+                }
+            } while (true);
+
+            activityData.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
             setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
-
             currentIndex++;
-            setRaffleStart(false)
+            setRaffleStart(false);
+        } else {
+            clearInterval(interval);
         }
-        else {
-            clearInterval(interval)
-        }
+    };
 
 
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
