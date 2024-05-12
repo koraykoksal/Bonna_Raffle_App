@@ -14,13 +14,13 @@ const UserApplications = () => {
 
   const { getFireData } = useRaffleCall()
   const { firebase_activityData } = useSelector((state) => state.raffle)
-  const [activityData, setactivityData] = useState([])
+  const [activityData, setActivityData] = useState([])
 
   const [delOpen, setdelOpen] = React.useState(false);
   const delHandleOpen = () => setdelOpen(true);
   const delHandleClose = () => setdelOpen(false);
 
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState([])
 
   useEffect(() => {
     getFireData('bonna-activity')
@@ -36,10 +36,9 @@ const UserApplications = () => {
       const dateB = new Date(b.activityDate.split('.').reverse().join('-'))
       return dateB-dateA
     })
-    setactivityData(data)
+    setActivityData(data)
 
   }, [firebase_activityData])
-
 
 
   return (
@@ -50,9 +49,9 @@ const UserApplications = () => {
 
       <Box sx={{ p: 5 }}>
 
-        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} />
+        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} info={info} />
 
-        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} activityData={activityData} info={info} />
+        <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
       </Box>
 

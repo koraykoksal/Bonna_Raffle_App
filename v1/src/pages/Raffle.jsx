@@ -17,16 +17,16 @@ import { activityInfo } from "../helper/avtivity_Info"
 const Raffle = () => {
 
 
-    const { getFireData, post_userWinners } = useRaffleCall()
-    const { firebase_activityData } = useSelector((state) => state.raffle)
-    const [activityData, setactivityData] = useState([])
+    const { getFireData, getActivityData, post_userWinners } = useRaffleCall()
+    const { firebase_activityData, activityData, lokasyonData } = useSelector((state) => state.raffle)
+    const [activityDatas, setActivityDatas] = useState([])
     const [info, setInfo] = useState([])
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
 
     const [data, setdata] = useState([])
 
-    const cekilisSuresi = 1000
+    const cekilisSuresi = 10000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
@@ -35,24 +35,26 @@ const Raffle = () => {
 
     //! tüm başvuruları çek
     useEffect(() => {
-        getFireData('bonna-activity')
+        getFireData('bonna-activity') //başvuru yapan kişiler
+        getActivityData('images') // aktivasyon datası
     }, [])
 
 
     //! başvuruları filtrele
     useEffect(() => {
 
+        //başvuru yapan kullanıcı datasını çek
         const data = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
-        // Status değeri true olanları filtrele
-        const activeActivities = activityInfo.filter(info => info.status);
+        // yayın bilgisi açık olan etkiliğin datasını getir
+        const activeActivities = activityData?.filter(info => info.publish);
 
         // Eşleşenleri bul
         const matchedActivities = data.filter(data => {
-            return activeActivities.some(activity => activity.name === data.activityName);
+            return activeActivities.some(item => item.activityName === data.activityName);
         });
 
-        setactivityData(matchedActivities || [])
+        setActivityDatas(matchedActivities || [])
 
     }, [firebase_activityData])
 
@@ -91,7 +93,7 @@ const Raffle = () => {
 
     const lottery = () => {
         if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
-            if (activityData.length === 0) {
+            if (activityDatas.length === 0) {
                 console.error("Hata: Seçilecek öğe kalmadı.");
                 clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
                 return;
@@ -100,11 +102,11 @@ const Raffle = () => {
             let selected;
             let dataIndex; // dataIndex'i döngü dışında tanımla
             do {
-                dataIndex = Math.floor(Math.random() * activityData.length); // dataIndex'i burada ata
-                selected = activityData[dataIndex]; // Potansiyel seçilen öğe
+                dataIndex = Math.floor(Math.random() * activityDatas.length); // dataIndex'i burada ata
+                selected = activityDatas[dataIndex]; // Potansiyel seçilen öğe
 
-                if (selected.tesis === "Pazaryeri") {
-                    if (pazaryeriSelections >= 10) {
+                if (selected.tesis === `${lokasyonData.lokasyon}` || "") {
+                    if (pazaryeriSelections >= `${lokasyonData.miktar}` || 0) {
                         continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
                     } else {
                         pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
@@ -115,7 +117,7 @@ const Raffle = () => {
                 }
             } while (true);
 
-            activityData.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
+            activityDatas.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
             setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
             currentIndex++;
             setRaffleStart(false);
@@ -134,7 +136,7 @@ const Raffle = () => {
         }
         else {
 
-            if (activityData.length > 0) {
+            if (activityDatas.length > 0) {
 
                 setRaffleStart(true)
                 currentIndex = 0;
@@ -161,6 +163,8 @@ const Raffle = () => {
         }
     }
 
+
+    console.log(lokasyonData)
 
     return (
         <div style={raffleBgPattern}>

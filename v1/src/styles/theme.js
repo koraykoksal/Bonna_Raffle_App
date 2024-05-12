@@ -38,11 +38,11 @@ export const darktheme = {
 export const homeBgPattern={
 
   width: "100%",
-  height: "900px",
-  backgroundImage: `url(${pattern1})`,
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  backgroundRepeat: "no-repeat",
+  height: "100%",
+  // backgroundImage: `url(${pattern1})`,
+  // backgroundPosition: "center",
+  // backgroundSize: "cover",
+  // backgroundRepeat: "no-repeat",
 
 
 }
@@ -50,11 +50,11 @@ export const homeBgPattern={
 export const detailBgPattern={
 
   width: "100%",
-  height: "900px",
-  backgroundImage: `url(${pattern2})`,
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  backgroundRepeat: "no-repeat",
+  height: "100%",
+  // backgroundImage: `url(${pattern2})`,
+  // backgroundPosition: "center",
+  // backgroundSize: "cover",
+  // backgroundRepeat: "no-repeat",
 
 
 }
@@ -66,10 +66,10 @@ export const raffleBgPattern={
   paddingBottom:"400px",
   // backgroundColor:'#2c96df',
   backgroundColor:'#4ea3de',
-  backgroundImage: `url(${pattern3})`,
-  backgroundPosition: "100% 0",
-  backgroundSize: "700px",
-  backgroundRepeat: "no-repeat",
+  // backgroundImage: `url(${pattern3})`,
+  // backgroundPosition: "100% 0",
+  // backgroundSize: "700px",
+  // backgroundRepeat: "no-repeat",
 
 
 }

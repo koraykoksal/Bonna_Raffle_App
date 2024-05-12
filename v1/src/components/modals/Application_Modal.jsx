@@ -68,10 +68,10 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 1 }}>
               <Typography variant="subtitle2" component="h2" color="#000000">
-                Aktivite : {state.name}
+                Aktivite : {state.activityName}
               </Typography>
               <Typography variant="subtitle2" component="h2" color="#000000">
-                Tarih : {state.date}
+                Tarih : {state.activityDate}
               </Typography>
             </Box>
 

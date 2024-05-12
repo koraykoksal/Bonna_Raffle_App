@@ -21,7 +21,8 @@ export const bonnaDepartments=[
     {name: "Tedarik Zinciri"},
     {name: "Ticari Pazarlama"},
     {name: "Üretim"},
-    {name: "Yurtiçi Satış"}
+    {name: "Yurtiçi Satış"},
+    {name: "Pazarlama"},
 ]
 
 

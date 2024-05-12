@@ -13,94 +13,30 @@ import NewActivity from '../components/modals/NewActivity';
 
 export const Home = () => {
 
-  const { getFireData, get_bonnaPersonel, get_userWinners } = useRaffleCall()
+  const { getFireData, get_bonnaPersonel, get_userWinners, getActivityData } = useRaffleCall()
   const { token } = useSelector((state) => state.auth)
+  const { activityData } = useSelector((state) => state.raffle)
 
-  
+
+  // sayfa render olduğu zaman firebase den verileri çek
   useEffect(() => {
+    getActivityData('images')
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
     get_bonnaPersonel()
   }, [])
 
 
-  const handleChange = (e) => {
-    const {name,value} = e.target
-    setInfo({...info,[name]:value})
-  }
-  
-  const handleFileChange=(e)=>{
 
-    const filename = e.target.files[0].name
-
-    if(e.target.files[0].name){
-      setInfo(prevInfo=>({
-        ...prevInfo,
-        activityImage:filename
-      }))
-    }
-
-  }
-
-  //kayıt işlemi yap
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    setInfo({
-      activityName: "",
-      activityDate: "",
-      activityImage: "",
-      members: ""
-    })
-
-  }
-
-  const [info, setInfo] = useState({
-    activityName: "",
-    activityDate: "",
-    activityImage: "",
-    members: ""
-
-  })
-
-
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false)
-    setInfo({
-      activityName: "",
-      activityDate: "",
-      activityImage: "",
-      members: ""
-    })
-  }
 
 
   return (
 
     <div style={homeBgPattern}>
 
-      <Box>
-
-
-        {
-          token && <Container sx={{ py: 5 }}>
-            <Button sx={{ textTransform: 'none' }} variant='contained' onClick={handleOpen}>Yeni</Button>
-          </Container>
-        }
-
-
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', py: 5, gap: 5 }}>
-          <Etkinliks />
-        </Box>
-
-
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', py: 5, gap: 5 }}>
+        <Etkinliks activityData={activityData} />
       </Box>
-
-      <NewActivity info={info} setInfo={setInfo} open={open} handleClose={handleClose} handleChange={handleChange} handleFileChange={handleFileChange} handleSubmit={handleSubmit} />
-
     </div>
 
   )

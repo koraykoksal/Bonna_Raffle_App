@@ -39,13 +39,19 @@ const pages = [
   }
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [
+  {
+    title: "Settings",
+    url: "settings"
+  },
+
+];
 
 const NavBar = () => {
 
 
   const { logout } = useAuthCall()
-  const { currentUser } = useSelector((state) => state.auth)
+  const { currentUser, token } = useSelector((state) => state.auth)
 
   const navigate = useNavigate()
 
@@ -167,49 +173,46 @@ const NavBar = () => {
 
           {/* SETTINGS MENU */}
 
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-
-
-          <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
-            
-            {
-              currentUser && 
-              <Box sx={{ display: { xs: 'flex', md: 'flex' }, justifyContent: 'center', gap: 3, mr: 1 }}>
-                <Typography>{currentUser || null}</Typography>
-                <RiLogoutCircleRLine size={22} color='#B31312' cursor='pointer' onClick={() => logout()} />
-              </Box>
-              
-              // <Button variant='contained' onClick={()=>navigate('/login')} sx={{textTransform:'none',letterSpacing:3}}>Giriş</Button>
-            }
-          </Box>
+          {
+            token &&
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting, index) => (
+                  <ListItemButton
+                    key={index}
+                    onClick={() => {
+                      navigate(setting.url)
+                      handleCloseUserMenu()
+                    }}
+                    sx={{ textTransform: 'none', flexDirection: 'column', display: 'flex', gap: 1 }}
+                  >
+                    <ListItemText>{setting.title}</ListItemText>
+                    <ListItemText sx={{ color: 'red' }} onClick={logout}>Logout</ListItemText>
+                  </ListItemButton>
+                ))}
+              </Menu>
+            </Box>
+          }
 
         </Toolbar>
 

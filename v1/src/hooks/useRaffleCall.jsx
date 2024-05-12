@@ -6,12 +6,15 @@ import {
     fetchApplyData,
     fetchActivityData,
     fetchBonnaPersonelData,
-    fetchUserWinnersData
+    fetchUserWinnersData,
+    fetchUploadStart,
+    fetchUploadEnd,
+    fetchActivityUserData
 
 } from '../features/raffleSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { toastInfoNotify, toastSuccessNotify, toastErrorNotify } from '../helper/ToastNotify'
+import { toastInfoNotify, toastSuccessNotify, toastErrorNotify, toastWarnNotify } from '../helper/ToastNotify'
 import { doc, setDoc, Timestamp, collection, addDoc, getDocs, getDoc } from "firebase/firestore";
 import { db } from "../db/firebase_db"
 import { getDatabase, onValue, ref, remove, set, update } from "firebase/database";
@@ -19,7 +22,7 @@ import { uid } from "uid";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { bonnaPersonels } from '../helper/personels'
-
+import { getStorage, ref as dbRef, uploadBytes, getDownloadURL, getMetadata, listAll, list, deleteObject } from "firebase/storage";
 
 const useRaffleCall = () => {
 
@@ -102,7 +105,7 @@ const useRaffleCall = () => {
                         console.log("activity data null geliyor:", data);
                         reject(new Error("Data is null or undefined"));
                     } else {
-                        dispatch(fetchActivityData(data));
+                        dispatch(fetchActivityUserData(data));
                         resolve(data);
                     }
                 });
@@ -151,6 +154,7 @@ const useRaffleCall = () => {
             remove(ref(db, `${address}/${id}`))
             toastSuccessNotify('Data Deleted ✅')
         } catch (error) {
+            console.log("removeFirebaseData : ", error)
             toastErrorNotify('No Delete Data ❌')
         }
     }
@@ -174,14 +178,14 @@ const useRaffleCall = () => {
             }
 
             const res = await axios(options)
-            const data = res?.data.map((item)=>{
-                return{
-                    NAME:item.NAME,
-                    SURNAME:item.SURNAME,
-                    TCKIMLIKNO:item.TCKIMLIKNO
+            const data = res?.data.map((item) => {
+                return {
+                    NAME: item.NAME,
+                    SURNAME: item.SURNAME,
+                    TCKIMLIKNO: item.TCKIMLIKNO
                 }
             })
-   
+
             dispatch(fetchBonnaPersonelData(data))
 
         } catch (error) {
@@ -264,6 +268,125 @@ const useRaffleCall = () => {
 
 
 
+    //! dosyayı storage tarafına yükle
+    const postImageDataToFirebase = async (files, info) => {
+
+        // işlem başadığında loading bilgisini true yap
+        dispatch(fetchUploadStart())
+
+        try {
+
+            const store = getStorage() //storage bilgisini çek
+
+            const filePath = `images/${info?.fileName}`;
+            const fileRef = dbRef(store, filePath);
+
+            // Dosyayı Firebase Storage'a yükleyin
+            await uploadBytes(fileRef, files);
+
+            // Yüklenen dosyanın URL'sini alın
+            const downloadURL = await getDownloadURL(fileRef);
+
+            if (downloadURL) {
+
+                // info objesini ayıkla ve downloadURL bilgisini yeni obje bilgisi içerisine ekle
+                const newData = { ...info, imgUrl: downloadURL }
+
+                //! realtime db kaydı için fonksiyon çalıştır
+                postDownloadUrlToRealTimeDb(newData)
+
+            }
+            else {
+                toastWarnNotify('Not created image url link !')
+            }
+
+
+        } catch (error) {
+            dispatch(fetchFail())
+            console.error("Dosya yükleme hatası: ", error);
+            toastErrorNotify('File could not be accessed!')
+            // throw error; // Hata yönetimi için hatayı fırlatın
+        }
+
+    }
+
+    //! realtime db tarafına yüklenin dosyanın url bilgisini ve info datasını çalıştıran fonksiyon
+    const postDownloadUrlToRealTimeDb = async (newObj) => {
+
+        const uID = uid() //unique id oluştur
+        const db = getDatabase() //database bilgisini çek
+
+        try {
+
+            if (newObj?.imgUrl) {
+                await set(ref(db, 'images/' + uID), newObj)
+                //yükleme işlemi sonrası loading ve error bilgisini false yap
+                dispatch(fetchUploadEnd())
+                toastSuccessNotify('File Uploaded')
+            }
+
+        } catch (error) {
+            dispatch(fetchFail())
+            // console.log("post realtime db error: ", error)
+            toastErrorNotify('File not uploaded !')
+            throw error; // Hata yönetimi için hatayı fırlatın
+        }
+
+
+
+    }
+
+
+    //! firebase den kayıt edilen activity verisini çek
+    const getActivityData = (address) => {
+
+
+        dispatch(fetchStart());
+
+        try {
+            const db = getDatabase();
+            const starCountRef = ref(db, `${address}/`);
+            onValue(starCountRef, (snapshot) => {
+                const data = snapshot.val();
+
+                if (data == null || data == undefined) {
+                    console.log("activity data null geliyor:", data);
+                }
+                else {
+                    //db den gelen datayı array olarak çevir
+                    const dizi = Object.keys(data).map(key => { return { id: key, ...data[key] } })
+
+                    dispatch(fetchActivityData(dizi));
+
+                }
+            });
+        } catch (error) {
+            console.log("getActivityData : ", error)
+            toastErrorNotify('error getFireData');
+        }
+
+    }
+
+
+
+    //güncelle hooks
+    const putFireData = (address, info) => {
+
+        try {
+
+            const db = getDatabase()
+            update(ref(db, `${address}/` + info.id), info)
+            toastSuccessNotify('Updated Data')
+
+            /// güncelleme sonrası aktivite datasını tekrar çek
+            getActivityData(address)
+
+        } catch (error) {
+            console.log("Update error :", error)
+            toastErrorNotify('Not OK Update')
+        }
+    }
+
 
 
     return {
@@ -273,7 +396,10 @@ const useRaffleCall = () => {
         removeFirebaseData,
         get_bonnaPersonel,
         post_userWinners,
-        get_userWinners
+        get_userWinners,
+        postImageDataToFirebase,
+        getActivityData,
+        putFireData
 
     }
 

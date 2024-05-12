@@ -23,66 +23,55 @@ import { useNavigate } from "react-router-dom"
 import { uid } from "uid";
 
 
-const Etkinliks = () => {
+const Etkinliks = ({ activityData }) => {
 
     const navigate = useNavigate()
 
+    // aktivite datasına sort işlemi yap
+    function dateCheck() {
+        const sortData = [...activityData]
+         return sortData.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate));
+
+    }
+
+
+    dateCheck()
 
     return (
 
         <>
-
             <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 10 }}>
 
                 {
-                    // etkinlik datasını tarih bilgisine göre sıralama yap
-                    // split : '.' dan ayır ve dizi formatına dönüştür ['03','02','2024']
-                    // reverse : dizi elemanlarının sırasını tersine çevir
-                    // join : '-' işareti ile veriyi 2024-02-03 formatına çevir
-                    activityInfo.sort((a, b) => {
-                        const dateA = new Date(a.date.split('.').reverse().join('-'))
-                        const dateB = new Date(b.date.split('.').reverse().join('-'))
-                        return dateB - dateA
+                    dateCheck(activityData).map((item, index) => (
 
-                    }).map((item, index) => (
-
-                        <Card key={index} sx={{ maxWidth: 350 }}>
+                        <Card key={index} sx={{ maxWidth: 350, backgroundColor: 'transparent', boxShadow: 0 }}>
                             <CardContent>
-                                <Typography variant='h6'>{item.name}</Typography>
-                                <Typography>{item.date}</Typography>
+                                <Typography variant='h6'>{item?.activityName}</Typography>
+                                <Typography>{item?.activityDate}</Typography>
                             </CardContent>
                             <CardMedia
                                 component="img"
                                 height="350"
                                 loading='lazy'
-                                image={item.image}
+                                image={item?.imgUrl}
                             />
                             <CardActions disableSpacing sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
                                 {
-                                    item.status ?
-                                        (<Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: item })} sx={{ letterSpacing: 3 }}>Detay</Button>)
-                                        :
-                                        ("")
+                                    item?.publish &&
+                                    <Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: item })} sx={{ letterSpacing: 3 }}>Detay</Button>
                                 }
 
-                                {
-                                    item.status ?
-                                        (<Typography variant='h6' fontWeight={700}>Aktif</Typography>)
-                                        :
-                                        ("")
-                                }
+                                <Typography variant='h6' fontWeight={700}>{item?.publish ? "Aktif" : "Pasif"}</Typography>
 
                             </CardActions>
 
 
                         </Card>
 
-
-
                     ))
                 }
-
 
 
             </Box>

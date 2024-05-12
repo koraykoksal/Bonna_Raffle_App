@@ -9,6 +9,7 @@ import EtkinlikDetail from '../pages/EtkinlikDetail'
 import Raffle from '../pages/Raffle'
 import UserApplications from '../pages/UserApplications'
 import UserWinners from '../pages/UserWinners'
+import Settings from '../pages/Settings'
 
 
 
@@ -28,6 +29,7 @@ export const AppRouter = () => {
             <Route path='/userapplications' element={<UserApplications/>} />
             <Route path='/raffle' element={<Raffle/>}/>
             <Route path='/userwinners' element={<UserWinners/>}/>
+            <Route path='/settings' element={<Settings/>}/>
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>

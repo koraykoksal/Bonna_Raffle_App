@@ -5,11 +5,11 @@ import {useSelector} from "react-redux"
 
 const PrivateRouter = () => {
 
-  const {currentUser} = useSelector((state)=>state.auth)
+  const {token} = useSelector((state)=>state.auth)
  
   return (
 
-    currentUser ? <Outlet/> : <Navigate to="/login"/>
+    token ? <Outlet/> : <Navigate to="/login"/>
 
   )
 }

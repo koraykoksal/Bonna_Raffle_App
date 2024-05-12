@@ -14,6 +14,11 @@ const initialState = {
     firebase_activityData:[],
     bonnaPersonel:[],
     userWinners:[],
+
+    activityData:[],
+    fileUpload_Loading:false,
+
+    lokasyonData:[]
 }
 
 const raffleSlice = createSlice({
@@ -38,6 +43,10 @@ const raffleSlice = createSlice({
         },
         fetchActivityData:(state,{payload})=>{
             state.loading=false
+            state.activityData=payload
+        },
+        fetchActivityUserData:(state,{payload})=>{
+            state.loading=false
             state.firebase_activityData=payload
         },
         fetchBonnaPersonelData:(state,{payload})=>{
@@ -47,8 +56,18 @@ const raffleSlice = createSlice({
         fetchUserWinnersData:(state,{payload})=>{
             state.loading=false
             state.userWinners=payload
-        }
-
+        },
+        fetchUploadStart: (state) => {
+            state.fileUpload_Loading = true
+            state.error = false
+        },
+        fetchUploadEnd: (state) => {
+            state.fileUpload_Loading = false
+            state.error = false
+        },
+        fetchLokasyonSetting: (state,{payload}) => {
+          state.lokasyonData=payload
+        },
 
 
     }
@@ -63,9 +82,13 @@ export const {
     fetchStart,
     fetchFail,
     fetchApplyData,
+    fetchActivityUserData,
     fetchActivityData,
     fetchBonnaPersonelData,
-    fetchUserWinnersData
+    fetchUserWinnersData,
+    fetchUploadStart,
+    fetchUploadEnd,
+    fetchLokasyonSetting
 
 } = raffleSlice.actions
 

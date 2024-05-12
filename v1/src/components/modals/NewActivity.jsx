@@ -3,10 +3,11 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Container, IconButton, TextField, TextareaAutosize } from '@mui/material';
+import { Checkbox, Container, FormControlLabel, IconButton, TextField, TextareaAutosize, linkClasses } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { IoIosCloseCircle } from "react-icons/io";
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const style = {
     position: 'absolute',
@@ -24,7 +25,9 @@ const style = {
 
 
 
-const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFileChange, handleSubmit }) => {
+const NewActivity = ({ info, setInfo, open, handleClose, handleChange, handleFileChange, handleSubmit,handleIsCheck }) => {
+
+    const { fileUpload_Loading } = useSelector((state) => state.raffle)
 
 
     return (
@@ -45,7 +48,7 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFile
                     <Typography variant='subtitle1' align='center' fontWeight={700}>Yeni Etkinlik Kaydı</Typography>
 
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, mt: 5 }} component={'form'}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, mt: 5 }} component={'form'} onSubmit={handleSubmit}>
 
 
                         <TextField
@@ -56,8 +59,8 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFile
                             id="activityName"
                             type="text"
                             variant="outlined"
-                            inputProps={{ maxLength: 11 }}
-                            // value={info.activityName}
+                            inputProps={{ maxLength: 50 }}
+                            value={info.activityName}
                             onChange={handleChange}
                         />
 
@@ -67,10 +70,10 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFile
                             // label="Tarih"
                             name="activityDate"
                             id="activityDate"
-                            type="date"
+                            type="datetime-local"
                             variant="outlined"
-                            inputProps={{ maxLength: 30 }}
-                            // value={info.activityDate}
+                            inputProps={{ maxLength: 50 }}
+                            value={info.activityDate}
                             onChange={handleChange}
                         />
 
@@ -83,24 +86,46 @@ const NewActivity = ({ info, setInfo, open, handleClose, handleChange,handleFile
                             id="members"
                             type="number"
                             variant="outlined"
-                            inputProps={{ maxLength: 30 }}
-                            // value={info.members}
+                            inputProps={{ maxLength: 50 }}
+                            value={info.members}
                             onChange={handleChange}
                         />
 
+                        <FormControlLabel
+                            name='publish'
+                            id='publish'
+                            control={
+                                <Checkbox name="gilad" checked={info.publish}  onChange={(e) => handleIsCheck(e)} />
+                            }
+                            label={
+                                <Typography
+                                    variant='inherit'
+                                >
+                                    Yayına Al
+                                </Typography>}
+
+                        />
+
                         <TextField
-                            required
                             fullWidth
                             name="activityImage"
                             id="activityImage"
                             type="file"
                             variant="outlined"
-                            inputProps={{ maxLength: 30 }}
                             // value={info.activityImage}
                             onChange={handleFileChange}
+                            inputProps={{
+                                accept: '.png , .jpeg , .jpg' //sadece bu dosya tiplerine izin ver
+                            }}
                         />
 
-                        <Button variant='contained' onSubmit={handleSubmit}>Kaydet</Button>
+
+                        {
+                            fileUpload_Loading ?
+                                <div className='loader' style={{ margin: 'auto' }}></div>
+                                :
+                                <Button variant='contained' type='submit'>{info.id ? "Güncelle":"Kayıt"}</Button>
+                        }
 
                     </Box>
 

@@ -19,14 +19,23 @@ const style = {
 
 
 
-const DeleteModals = ({ delOpen, delHandleClose, activityData, info }) => {
+const DeleteModals = ({ delOpen, delHandleClose, info }) => {
 
-    const { removeFirebaseData, getFireData } = useRaffleCall()
+
+    const { removeFirebaseData, getFireData, getActivityData } = useRaffleCall()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        removeFirebaseData('bonna-activity',info)
-        getFireData('bonna-activity')
+
+        if (info.type == "user-application") {
+            removeFirebaseData('bonna-activity', info.id)
+            getFireData('bonna-activity')
+        }
+        else if (info.type == "activitydata") {
+            removeFirebaseData('images', info.id)
+            getActivityData('images')
+        }
+
         delHandleClose()
     }
 
