@@ -226,6 +226,7 @@ const NavBar = () => {
 
 
     </AppBar>
+    
 
   )
 }
