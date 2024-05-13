@@ -20,12 +20,12 @@ export const Home = () => {
 
   // sayfa render olduğu zaman firebase den verileri çek
   useEffect(() => {
+    get_bonnaPersonel()
     getActivityData('images')
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
-    get_bonnaPersonel()
+    
   }, [])
-
 
 
 

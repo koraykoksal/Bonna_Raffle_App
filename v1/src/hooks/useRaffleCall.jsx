@@ -37,12 +37,12 @@ const useRaffleCall = () => {
 
         try {
 
-            // await get_bonnaPersonel() // bonna personel datasını çek
+            // const bonnaPersonel = await get_bonnaPersonel() // bonna personel datasını çek
             // await getFireData('bonna-activity') // başvuru listesini çek
             // await get_userWinners('bonna-activity-winners') // kazananlar lisesini çek
 
             //?* personel var mı kontrol et
-            const findPersonel = bonnaPersonels?.find((item) => item.TCKIMLIKNO == info.tcNo)
+            const findPersonel = bonnaPersonel?.find((item) => item.TCKIMLIKNO == info.tcNo)
 
             if (findPersonel) {
 
@@ -186,6 +186,7 @@ const useRaffleCall = () => {
                 }
             })
 
+            // return data
             dispatch(fetchBonnaPersonelData(data))
 
         } catch (error) {
