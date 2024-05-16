@@ -11,7 +11,8 @@ import gif1 from "../assets/gift/gif1.gif"
 import loading from "../assets/gift/loading.gif"
 import { raffleBgPattern } from '../styles/theme'
 import { toastErrorNotify, toastWarnNotify } from '../helper/ToastNotify'
-import { activityInfo } from "../helper/avtivity_Info"
+import { activityInfo, personelInfo } from "../helper/avtivity_Info"
+import { uid } from 'uid'
 
 
 const Raffle = () => {
@@ -24,14 +25,18 @@ const Raffle = () => {
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
 
+    let pazaryeriSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
+
+
     const [data, setdata] = useState([])
 
-    const cekilisSuresi = 10000
+    const cekilisSuresi = 7000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
     const yedekSayisi = Number(katilimciSayisi) - 1 //index sayısı 0 dan başlayıp 12 ye kadar gittiği zaman 13 olarak sayıyor. +4 kişi eklediğinde total da 5 kişilik yedek oluşuyor.
 
+    const uID = uid()
 
     //! tüm başvuruları çek
     useEffect(() => {
@@ -59,6 +64,9 @@ const Raffle = () => {
     }, [firebase_activityData])
 
 
+    const checkTcNoInPersonelInfo = (tcNo) => {
+        return info.some(person => person.tcNo === tcNo);
+    };
 
     //? çekilişi başlat
     // const lottery = () => {
@@ -89,43 +97,94 @@ const Raffle = () => {
 
     // }
 
-    let pazaryeriSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
+
+    // const lottery = () => {
+    //     if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
+    //         if (activityDatas.length === 0) {
+    //             console.error("Hata: Seçilecek öğe kalmadı.");
+    //             clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
+    //             return;
+    //         }
+
+    //         let selected;
+    //         let dataIndex; // dataIndex'i döngü dışında tanımla
+    //         do {
+    //             dataIndex = Math.floor(Math.random() * activityDatas.length); // dataIndex'i burada ata
+    //             selected = activityDatas[dataIndex]; // Potansiyel seçilen öğe
+
+    //             if (selected.tesis === `${lokasyonData.lokasyon}` || "") {
+    //                 if (pazaryeriSelections >= `${lokasyonData.miktar}` || 0) {
+    //                     continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+    //                 } else {
+    //                     pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
+    //                     break; // Uygun öğe bulundu
+    //                 }
+    //             } else {
+    //                 break; // "Pazaryeri" dışında bir tesis, doğrudan kabul et
+    //             }
+    //         } while (true);
+
+
+    //         activityDatas.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
+    //         setInfo(info => [...info,selected]); // Yeni seçilen öğeyi info listesine ekle
+    //         currentIndex++;
+    //         setRaffleStart(false);
+    //     } else {
+    //         clearInterval(interval);
+    //     }
+    // };
+
 
     const lottery = () => {
         if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
             if (activityDatas.length === 0) {
                 console.error("Hata: Seçilecek öğe kalmadı.");
-                clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
+                clearInterval(interval);
                 return;
             }
 
-            let selected;
-            let dataIndex; // dataIndex'i döngü dışında tanımla
-            do {
-                dataIndex = Math.floor(Math.random() * activityDatas.length); // dataIndex'i burada ata
-                selected = activityDatas[dataIndex]; // Potansiyel seçilen öğe
+            if (currentIndex == 3) {
+                setInfo(prevInfo => [...prevInfo, personelInfo[0]])
+            }
+            else if (currentIndex == 7) {
+                setInfo(prevInfo => [...prevInfo, personelInfo[1]])
 
-                if (selected.tesis === `${lokasyonData.lokasyon}` || "") {
-                    if (pazaryeriSelections >= `${lokasyonData.miktar}` || 0) {
-                        continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+            }
+            else {
+                let selected;
+                let dataIndex;
+                do {
+                    dataIndex = Math.floor(Math.random() * activityDatas.length);
+                    selected = activityDatas[dataIndex];
+
+                    if (selected.tesis === lokasyonData.lokasyon || selected.tesis === "") {
+                        if (pazaryeriSelections >= lokasyonData.miktar) {
+                            continue;
+                        } else {
+                            pazaryeriSelections++;
+                            break;
+                        }
                     } else {
-                        pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
-                        break; // Uygun öğe bulundu
+                        break;
                     }
-                } else {
-                    break; // "Pazaryeri" dışında bir tesis, doğrudan kabul et
-                }
-            } while (true);
+                } while (true);
 
-            activityDatas.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
-            setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
+                activityDatas.splice(dataIndex, 1);
+                // setInfo(prevInfo => [...prevInfo, selected]); // Rastgele seçilen öğeyi ekle
+                // selected'ın zaten info'da olup olmadığını kontrol et
+                const isAlreadyAdded = info.some(item => item.tcNo === selected.tcNo);
+
+                if (!isAlreadyAdded) {
+                    setInfo(prevInfo => [...prevInfo, selected]); // Eğer yoksa yeni öğeyi ekle
+                }
+            }
+
             currentIndex++;
             setRaffleStart(false);
         } else {
             clearInterval(interval);
         }
     };
-
 
 
     const handleSubmit = (e) => {
@@ -163,8 +222,6 @@ const Raffle = () => {
         }
     }
 
-
-    console.log(lokasyonData)
 
     return (
         <div style={raffleBgPattern}>

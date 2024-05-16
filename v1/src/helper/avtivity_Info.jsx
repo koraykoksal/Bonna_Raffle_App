@@ -6,40 +6,37 @@ import bernarda from "../assets/etkinlik/bernarda.png"
 
 import { uid } from "uid";
 
-export const activityInfo = [
+const uID = uid()
+export const personelInfo = [
 
     {
-        id:uid(),
-        name: 'Çok Güzel Hareketler 2',
-        date: '10.12.2023',
-        image:cokguzelhareketler2,
-        status: false,
-
-
-    },
+        activityDate: "2024-05-26T18:00",
+        activityMonth: 5,
+        activityName: "Harlem Globetrotters",
+        activityYear: 2024,
+        birthday: "",
+        department: "İdari İşler",
+        id: "04149c0696a",
+        name: "Gökhan",
+        phone: "05062619069",
+        surname: "SUBAŞI ",
+        tcNo: "38792217504",
+        tesis: "Çayırova"
+    }
+    ,
     {
-        id:uid(),
-        name: 'Selda Bağcan',
-        date: '28.01.2024',
-        image:seldabagcan,
-        status: false
-
-    },
-    {
-        id:uid(),
-        name: 'Deniz Göktaş',
-        date: '23.02.2024',
-        image:denizgoktas,
-        status: false
-
-    },
-    {
-        id:uid(),
-        name: 'Bernarda',
-        date: '29.03.2024',
-        image:bernarda,
-        status: true
-
-    },
+        activityDate: "2024-05-26T18:00",
+        activityMonth: 5,
+        activityName: "Harlem Globetrotters",
+        activityYear: 2024,
+        birthday: "",
+        department: "İdari işler",
+        id: "02793l0696z",
+        name: "Selim",
+        phone: "05389325333",
+        surname: "Özkan ",
+        tcNo: "36181838996",
+        tesis: "Çayırova"
+    }
 
 ]
