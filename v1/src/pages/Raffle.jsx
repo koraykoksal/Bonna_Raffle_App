@@ -4,15 +4,10 @@ import useRaffleCall from '../hooks/useRaffleCall'
 import { useSelector } from 'react-redux'
 import { Box, Button, Container, TextField, Typography } from '@mui/material'
 import Winners from '../components/tables/Winners'
-import CircularProgress from '@mui/material/CircularProgress';
-import Stack from '@mui/material/Stack';
-import generateGift from "../assets/gift/generateGift.gif"
-import gif1 from "../assets/gift/gif1.gif"
 import loading from "../assets/gift/loading.gif"
 import { raffleBgPattern } from '../styles/theme'
-import { toastErrorNotify, toastWarnNotify } from '../helper/ToastNotify'
-import { activityInfo, personelInfo } from "../helper/avtivity_Info"
-import { uid } from 'uid'
+import { toastWarnNotify } from '../helper/ToastNotify'
+
 
 
 const Raffle = () => {
@@ -24,24 +19,22 @@ const Raffle = () => {
     const [info, setInfo] = useState([])
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
-
+    const [locationInfo, setlocationInfo] = useState([])
     let pazaryeriSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
+    let cayirovaSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
+    let pendikSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
 
-
-    const [data, setdata] = useState([])
-
-    const cekilisSuresi = 7000
+    const cekilisSuresi = 5000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
-    const yedekSayisi = Number(katilimciSayisi) - 1 //index sayısı 0 dan başlayıp 12 ye kadar gittiği zaman 13 olarak sayıyor. +4 kişi eklediğinde total da 5 kişilik yedek oluşuyor.
-
-    const uID = uid()
+    const yedekSayisi = Number(katilimciSayisi) //index sayısı 0 dan başlayıp 12 ye kadar gittiği zaman 13 olarak sayıyor. +4 kişi eklediğinde total da 5 kişilik yedek oluşuyor.
 
     //! tüm başvuruları çek
     useEffect(() => {
         getFireData('bonna-activity') //başvuru yapan kişiler
         getActivityData('images') // aktivasyon datası
+        setlocationInfo(JSON.parse(localStorage.getItem('lokasyonData')) || {}) // locale storageden verileri al
     }, [])
 
 
@@ -59,47 +52,75 @@ const Raffle = () => {
             return activeActivities.some(item => item.activityName === data.activityName);
         });
 
-        setActivityDatas(matchedActivities || [])
+        matchedActivities.length > 0 ? setActivityDatas(matchedActivities) : setActivityDatas([])
 
-    }, [firebase_activityData])
+    }, [firebase_activityData, activityData])
 
 
-    const checkTcNoInPersonelInfo = (tcNo) => {
-        return info.some(person => person.tcNo === tcNo);
-    };
-
-    //? çekilişi başlat
+    //! çekiliş fonksiyonu
     // const lottery = () => {
-
     //     if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
-
-    //         const dataIndex = Math.floor(Math.random() * activityData.length)
-
-    //         const selected = activityData.splice(dataIndex, 1)[0]; // Seçilen öğeyi al ve listeden çıkar
-
-    //         if (selected === undefined) {
-    //             console.error("Hata: Seçilen öğe bulunamadı.");
-    //             // İsteğe bağlı olarak burada da kullanıcıya bir mesaj gösterebilirsiniz.
+    //         if (activityDatas.length === 0) {
+    //             console.error("Hata: Seçilecek öğe kalmadı.");
+    //             clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
     //             return;
     //         }
 
+    //         let selected;
+    //         let dataIndex; // dataIndex'i döngü dışında tanımla
+    //         do {
+    //             dataIndex = Math.floor(Math.random() * activityDatas.length); // dataIndex'i burada ata
+    //             selected = activityDatas[dataIndex]; // Potansiyel seçilen öğe
 
 
-    //         setInfo(info => [...info, selected]); // Yeni seçilen öğeyi info listesine ekle
+    //             if (selected.tesis === 'Pazaryeri' || "") {
+    //                 if (pazaryeriSelections >= locationInfo.pazaryeri || 0) {
+    //                     continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+    //                 } 
+    //                 else {
+    //                     pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
+    //                     break; // Uygun öğe bulundu
+    //                 }
+    //             } 
+    //             else if (selected.tesis === 'Çayırova' || "") {
+    //                 if (cayirovaSelections >= locationInfo.cayirova || 0) {
+    //                     continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+    //                 } 
+    //                 else {
+    //                     cayirovaSelections++; // "Pazaryeri" için seçim sayısını artır
+    //                     break; // Uygun öğe bulundu
+    //                 }
+    //             } 
+    //             else if (selected.tesis === 'Pendik' || "") {
+    //                 if (pendikSelections >= locationInfo.pendik || 0) {
+    //                     continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
+    //                 } 
+    //                 else {
+    //                     pendikSelections++; // "Pazaryeri" için seçim sayısını artır
+    //                     break; // Uygun öğe bulundu
+    //                 }
+    //             } 
+    //             else {
+    //                 break; // "Pazaryeri" dışında bir tesis, doğrudan kabul et
+    //             }
+    //         } while (true);
 
+
+    //         activityDatas.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
+    //         setInfo(info => [...info,selected]); // Yeni seçilen öğeyi info listesine ekle
     //         currentIndex++;
-    //         setRaffleStart(false)
+    //         setRaffleStart(false);
+    //     } else {
+    //         clearInterval(interval);
     //     }
-    //     else {
-    //         clearInterval(interval)
-    //     }
-
-
-    // }
+    // };
 
 
     const lottery = () => {
-        if (currentIndex <= Number(katilimciSayisi) + Number(yedekSayisi)) {
+        const totalSelections = Number(katilimciSayisi) + Number(yedekSayisi);
+
+        // Ana katılımcıları seç
+        if (currentIndex < katilimciSayisi) {
             if (activityDatas.length === 0) {
                 console.error("Hata: Seçilecek öğe kalmadı.");
                 clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
@@ -107,28 +128,50 @@ const Raffle = () => {
             }
 
             let selected;
-            let dataIndex; // dataIndex'i döngü dışında tanımla
+            let dataIndex;
+            let loopCount = 0; // Sonsuz döngüyü önlemek için bir sayaç ekliyoruz.
             do {
-                dataIndex = Math.floor(Math.random() * activityDatas.length); // dataIndex'i burada ata
-                selected = activityDatas[dataIndex]; // Potansiyel seçilen öğe
+                dataIndex = Math.floor(Math.random() * activityDatas.length);
+                selected = activityDatas[dataIndex];
 
-                if (selected.tesis === `${lokasyonData.lokasyon}` || "") {
-                    if (pazaryeriSelections >= `${lokasyonData.miktar}` || 0) {
-                        continue; // "Pazaryeri" limiti aşıldıysa başka bir öğe seç
-                    } else {
-                        pazaryeriSelections++; // "Pazaryeri" için seçim sayısını artır
-                        break; // Uygun öğe bulundu
+                if (selected.tesis === 'Pazaryeri' && pazaryeriSelections < locationInfo.pazaryeri) {
+                    pazaryeriSelections++;
+                    break;
+                }
+                else if (selected.tesis === 'Çayırova' && cayirovaSelections < locationInfo.cayirova) {
+                    cayirovaSelections++;
+                    break;
+                }
+                else if (selected.tesis === 'Pendik' && pendikSelections < locationInfo.pendik) {
+                    pendikSelections++;
+                    break;
+                }
+                else {
+                    // Eğer bu lokasyon için limit aşıldıysa, diğerlerini denemeye devam et
+                    // continue;
+                    // Eğer lokasyon limitlerine ulaşılamıyorsa, rastgele seçim yaparak döngüden çık.
+                    loopCount++;
+                    if (loopCount > activityDatas.length) {
+                        console.log("Limitlere ulaşılamadı, rastgele seçim yapılıyor...");
+                        break;
                     }
-                } else {
-                    break; // "Pazaryeri" dışında bir tesis, doğrudan kabul et
                 }
             } while (true);
 
-
-            activityDatas.splice(dataIndex, 1); // Döngü dışında doğru kapsamda kullanılıyor
-            setInfo(info => [...info,selected]); // Yeni seçilen öğeyi info listesine ekle
+            setInfo(prevInfo => [...prevInfo, { ...selected, isBackup: false }]); // Ana listeye ekle
+            activityDatas.splice(dataIndex, 1); // Seçilen öğeyi listeden çıkar
             currentIndex++;
-            setRaffleStart(false);
+            setRaffleStart(false)
+            // Yedek katılımcıları seç
+        } else if (currentIndex < totalSelections) {
+            let selected;
+            let dataIndex;
+            dataIndex = Math.floor(Math.random() * activityDatas.length);
+            selected = activityDatas[dataIndex];
+
+            setInfo(prevInfo => [...prevInfo, { ...selected, isBackup: true }]); // Yedek listeye ekle
+            activityDatas.splice(dataIndex, 1); // Seçilen öğeyi listeden çıkar
+            currentIndex++;
         } else {
             clearInterval(interval);
         }
@@ -187,6 +230,10 @@ const Raffle = () => {
     // };
 
 
+    //! çekilişi başlat
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -196,6 +243,10 @@ const Raffle = () => {
         else {
 
             if (activityDatas.length > 0) {
+
+                if (!locationInfo.cayirova && !locationInfo.pazaryeri && !locationInfo.pendik) {
+                    return toastWarnNotify('Please check settings !')
+                }
 
                 setRaffleStart(true)
                 currentIndex = 0;
@@ -211,6 +262,8 @@ const Raffle = () => {
 
     }
 
+
+    //! sonuçları kaydet
     const handleSave = (e) => {
 
         if (!info.length > 0) {
@@ -218,7 +271,7 @@ const Raffle = () => {
         }
         else {
 
-            post_userWinners('bonna-activity-winners', data)
+            post_userWinners('bonna-activity-winners', info)
         }
     }
 
@@ -263,7 +316,7 @@ const Raffle = () => {
                         <img src={loading} width={350} />
                     </Container>)
                     :
-                    (<Winners info={info} setdata={setdata} katilimciSayisi={katilimciSayisi} />)
+                    (<Winners info={info} katilimciSayisi={katilimciSayisi} />)
             }
 
 

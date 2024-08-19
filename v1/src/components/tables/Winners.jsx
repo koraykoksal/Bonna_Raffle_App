@@ -5,7 +5,7 @@ import { useEffect,useState } from 'react';
 
 
 
-const Winners = ({ info,katilimciSayisi,setdata }) => {
+const Winners = ({ info,katilimciSayisi }) => {
 
     const [result, setResult] = useState([])
 
@@ -103,7 +103,7 @@ const Winners = ({ info,katilimciSayisi,setdata }) => {
             status:index+1 > katilimciSayisi ? "Yedek" : "Asil"
         }))
 
-        setdata(result)
+   
         setResult(result)
 
     }, [info])

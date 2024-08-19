@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React from 'react'
 import NewActivity from '../components/modals/NewActivity';
 import { useState, useEffect } from 'react';
@@ -15,8 +15,9 @@ const Settings = () => {
     const [files, setFiles] = useState("")
     const { postImageDataToFirebase, getActivityData, putFireData } = useRaffleCall()
     const { activityData, lokasyonData } = useSelector((state) => state.raffle)
+    const [localeStorageInfo, setlocaleStorageInfo] = useState([])
+    // const localeStorageInfo = JSON.parse(localStorage.getItem('lokasyonData'))
 
-    const dispatch = useDispatch()
 
     const [info, setInfo] = useState({
         activityName: "",
@@ -27,8 +28,9 @@ const Settings = () => {
     })
 
     const [data, setData] = useState({
-        lokasyon: "",
-        miktar: ""
+        cayirova: "",
+        pazaryeri: "",
+        pendik: ""
     })
 
     const [open, setOpen] = useState(false)
@@ -110,6 +112,18 @@ const Settings = () => {
     }
 
 
+    const handleSave = (e) => {
+        e.preventDefault()
+        localStorage.setItem('lokasyonData', JSON.stringify(data))
+        setlocaleStorageInfo(JSON.parse(localStorage.getItem('lokasyonData')))
+    }
+
+
+    useEffect(() => {
+        setlocaleStorageInfo(JSON.parse(localStorage.getItem('lokasyonData')) || {})
+    }, [])
+    
+
 
     return (
         <div>
@@ -119,15 +133,9 @@ const Settings = () => {
 
                 <Button sx={{ textTransform: 'none', width: 100 }} variant='contained' onClick={handleOpen}>Yeni</Button>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Container sx={{ display: 'flex', flexDirection: 'column', gap: 3, justifyContent: 'center', alignItems: 'center' }} component={'form'} onSubmit={handleSave}>
 
-                    <Typography variant='subtitle2' align='center'>Max Katılımcı Sayısı (Bir lokasyon için geçerlidir.)</Typography>
-
-                    <Container maxWidth='sm' sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }} component={'form'} onSubmit={(e) => {
-                        e.preventDefault()
-                        dispatch(fetchLokasyonSetting(data))
-                    }}>
-                        <FormControl sx={{ width: '200px' }}>
+                    {/* <FormControl sx={{ width: '200px' }}>
                             <InputLabel id='lokasyon'>Lokasyon</InputLabel>
                             <Select
                                 required
@@ -144,21 +152,63 @@ const Settings = () => {
                                     ))
                                 }
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
+
+                    <Box maxWidth='sm' sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+
+                        <Typography width={100} align='left'>Çayırova</Typography>
+
                         <TextField
+                            size='small'
                             required
-                            name='miktar'
-                            id='miktar'
+                            name='cayirova'
+                            id='cayirova'
                             variant='outlined'
                             label='Miktar'
                             type='number'
-                            value={data.miktar}
+                            value={data.cayirova}
                             onChange={handleDataChange}
                         />
-                        <Button variant='outlined' type='submit'>Güncelle</Button>
-                    </Container>
 
-                    {
+                    </Box>
+                    <Box maxWidth='sm' sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+
+                        <Typography width={100} align='left'>Pazaryeri</Typography>
+
+                        <TextField
+                            size='small'
+                            required
+                            name='pazaryeri'
+                            id='pazaryeri'
+                            variant='outlined'
+                            label='Miktar'
+                            type='number'
+                            value={data.pazaryeri}
+                            onChange={handleDataChange}
+                        />
+
+                    </Box>
+                    <Box maxWidth='sm' sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+
+                        <Typography width={100} align='left'>Pendik</Typography>
+
+                        <TextField
+                            size='small'
+                            required
+                            name='pendik'
+                            id='pendik'
+                            variant='outlined'
+                            label='Miktar'
+                            type='number'
+                            value={data.pendik}
+                            onChange={handleDataChange}
+                        />
+
+                    </Box>
+
+                    <Button sx={{ width: 150 ,textTransform:'none'}} color='success' size='small' variant='outlined' type='submit'>Güncelle</Button>
+
+                    {/* {
                         lokasyonData.lokasyon && lokasyonData.miktar ?
                             (
                                 <Typography color={'red'} variant='subtitle2' align='center'>
@@ -167,11 +217,26 @@ const Settings = () => {
                             )
                             :
                             ""
+                    } */}
+
+                </Container>
 
 
-                    }
-
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 3, alignItems: 'center' }}>
+                    <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3, backgroundColor: '#bebe', p: 1, borderRadius: 3 }}>
+                        <Typography align='left'>Çayırova :</Typography>
+                        <Typography>{localeStorageInfo.cayirova || 0}</Typography>
+                    </Grid>
+                    <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, backgroundColor: '#bebe', p: 1, borderRadius: 3 }}>
+                        <Typography align='left'>Pazaryeri :</Typography>
+                        <Typography>{localeStorageInfo.pazaryeri || 0}</Typography>
+                    </Grid>
+                    <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, backgroundColor: '#bebe', p: 1, borderRadius: 3 }}>
+                        <Typography align='left'>Pendik :</Typography>
+                        <Typography>{localeStorageInfo.pendik || 0}</Typography>
+                    </Grid>
                 </Box>
+
             </Container>
 
             <ActivityData_Table activityData={activityData} setInfo={setInfo} delHandleOpen={delHandleOpen} handleOpen={handleOpen} />
