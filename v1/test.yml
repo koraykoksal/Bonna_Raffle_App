@@ -1,0 +1,73 @@
+           // do {
+            //     dataIndex = Math.floor(Math.random() * cekilisData().length);
+            //     selected = cekilisData()[dataIndex];
+
+            //     console.log(" *** selected : ***", selected);
+
+            //     const lokasyon = selected.LOKASYON;
+            //     const statusCode = selected.STATUSCODE === "Beyaz Yaka" ? "beyaz" : "mavi";
+
+            //     // ✅ Hem lokasyon hem de yaka tipi kontrolü
+            //     if (
+            //         lokasyon === "Pazaryeri" && statusCode === "beyaz" &&
+            //         pazaryeriSelections < locationInfo.pazaryeri &&
+            //         beyazYakaSelections < locationInfo.beyaz
+            //     ) {
+            //         pazaryeriSelections++;
+            //         beyazYakaSelections++;
+            //     } else if (
+            //         lokasyon === "Pazaryeri" && statusCode === "mavi" &&
+            //         pazaryeriSelections < locationInfo.pazaryeri &&
+            //         maviYakaSelections < locationInfo.mavi
+            //     ) {
+            //         pazaryeriSelections++;
+            //         maviYakaSelections++;
+            //     } else if (
+            //         lokasyon === "Çayırova" && statusCode === "beyaz" &&
+            //         cayirovaSelections < locationInfo.cayirova &&
+            //         beyazYakaSelections < locationInfo.beyaz
+            //     ) {
+            //         cayirovaSelections++;
+            //         beyazYakaSelections++;
+            //     } else if (
+            //         lokasyon === "Çayırova" && statusCode === "mavi" &&
+            //         cayirovaSelections < locationInfo.cayirova &&
+            //         maviYakaSelections < locationInfo.mavi
+            //     ) {
+            //         cayirovaSelections++;
+            //         maviYakaSelections++;
+            //     } else if (
+            //         lokasyon === "Pendik" && statusCode === "beyaz" &&
+            //         pendikSelections < locationInfo.pendik &&
+            //         beyazYakaSelections < locationInfo.beyaz
+            //     ) {
+            //         pendikSelections++;
+            //         beyazYakaSelections++;
+            //     } else if (
+            //         lokasyon === "Pendik" && statusCode === "mavi" &&
+            //         pendikSelections < locationInfo.pendik &&
+            //         maviYakaSelections < locationInfo.mavi
+            //     ) {
+            //         pendikSelections++;
+            //         maviYakaSelections++;
+            //     } 
+            //     else {
+            //         loopCount++;
+            //         if (loopCount > cekilisData().length) {
+            //             console.log("Limitlere ulaşılamadı, rastgele seçim yapılıyor...");
+            //             break;
+            //         }
+            //         continue;
+            //     }
+
+            //     // ✅ Seçilen kişiyi listeye ekleyelim
+            //     setInfo((prevInfo) => [...prevInfo, { ...selected, statusCode, isBackup: false }]);
+
+            //     // ✅ Seçilen kişiyi çekiliş listesinden silelim
+            //     cekilisData().splice(dataIndex, 1);
+            //     currentIndex++;
+            //     setRaffleStart(false);
+
+            //     break; // Başarılı seçim yapıldıysa döngüden çık
+
+            // } while (true);

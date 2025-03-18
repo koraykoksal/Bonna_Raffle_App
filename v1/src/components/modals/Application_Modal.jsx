@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Container, IconButton, TextField, TextareaAutosize } from '@mui/material';
+import { Container, IconButton, TextField, TextareaAutosize, Tooltip } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -14,17 +14,22 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { bonnaDepartments, tesis } from "../../helper/bonna_departments"
 import useRaffleCall from '../../hooks/useRaffleCall';
 import { useNavigate } from "react-router-dom"
+import { format } from "date-fns"
+
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 450,
+  width: 550,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 1
 
 };
 
@@ -32,6 +37,7 @@ const style = {
 
 const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
 
+  const now = new Date()
   const navigate = useNavigate()
   const { postFireData, getFireData } = useRaffleCall()
 
@@ -64,28 +70,29 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
       >
         <Box sx={style}>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column-reverse', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 1 }}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 1 }}>
+            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 1, p: 2, border: `1px solid gray`, borderRadius: 2 }}>
               <Typography variant="subtitle2" component="h2" color="#000000">
                 Aktivite : {state.activityName}
               </Typography>
               <Typography variant="subtitle2" component="h2" color="#000000">
-                Tarih : {state.activityDate}
+                Tarih : {format(state.activityDate, 'dd-MM-yyyy HH:mm')}
               </Typography>
             </Box>
 
-            <IconButton onClick={() => handleClose()}>
-              <HighlightOffIcon sx={{ color: '#C70039', fontSize: '28px' }} />
-            </IconButton>
+            <Tooltip title="Kapat">
+              <IconButton onClick={() => handleClose()}>
+                <HighlightOffIcon sx={{ color: '#C70039', fontSize: '28px' }} />
+              </IconButton>
+            </Tooltip>
           </Box>
 
 
-          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 4, overflow: 'scroll', maxHeight: '600px' }} component='form' onSubmit={handleSubmit}>
+          <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2, overflow: 'scroll', maxHeight: '600px', border: '1px solid gray', borderRadius: 2 }} component='form' onSubmit={handleSubmit}>
 
 
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-
 
               <TextField
                 required
@@ -159,10 +166,25 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
                   label="Departman"
                   value={info.department}
                   onChange={handleChange}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        maxHeight: 200, // Açılır menünün maksimum yüksekliği (px cinsinden)
+                      },
+                    },
+                  }}
                 >
                   {
                     bonnaDepartments.map((item, index) => (
-                      <MenuItem key={index} value={item.name}>{item.name}</MenuItem>
+                      <MenuItem
+                        key={index}
+                        value={item.name}
+                        sx={{
+                          fontSize:14
+                        }}
+                      >
+                        {item.name}
+                      </MenuItem>
                     ))
                   }
 
@@ -198,7 +220,7 @@ const Application_Modal = ({ open, handleClose, info, setInfo, state }) => {
               type='submit'
               color='success'
             >
-              Bitir
+              Kayıt
             </Button>
 
 

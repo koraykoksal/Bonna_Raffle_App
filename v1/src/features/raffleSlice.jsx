@@ -32,6 +32,9 @@ const raffleSlice = createSlice({
             state.loading = true;
             state.error = false;
         },
+        fetchEnd: (state) => {
+            state.loading = false;
+        },
         fetchFail: (state) => {
             state.loading = false;
             state.error = true;
@@ -80,6 +83,7 @@ const raffleSlice = createSlice({
 export const {
     
     fetchStart,
+    fetchEnd,
     fetchFail,
     fetchApplyData,
     fetchActivityUserData,

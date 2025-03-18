@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,7 +6,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 
-const ActivityData_Table = ({ activityData, setInfo, delHandleOpen,handleOpen }) => {
+const ActivityData_Table = ({ activityData,settingData, setInfo, delHandleOpen,handleOpen }) => {
 
   const dataGrid_Columns = [
     {
@@ -21,9 +21,26 @@ const ActivityData_Table = ({ activityData, setInfo, delHandleOpen,handleOpen })
       field: "activityName",
       headerName: "Aktivite",
       minWidth: 150,
-      headerAlign: "center",
-      align: "center",
+      headerAlign: "left",
+      align: "left",
       flex: 1,
+      renderCell: (params) => {
+
+        return [
+          <Typography
+            variant='body2'
+            sx={{
+              maxWidth: 200,
+              overflow: 'auto',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'collapse',
+              wordBreak: 'break-word'
+          }}
+          >
+            {params.row.activityName}
+          </Typography>
+        ]
+      }
     },
     {
       field: "activityDate",
@@ -115,8 +132,9 @@ const ActivityData_Table = ({ activityData, setInfo, delHandleOpen,handleOpen })
       {
         <Box p={3}>
           <DataGrid
+          rowHeight={80}
             columns={dataGrid_Columns}
-            rows={activityData}
+            rows={settingData}
             initialState={{
               pagination: {
                 paginationModel: {

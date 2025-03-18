@@ -8,6 +8,7 @@ import { MdDelete } from "react-icons/md";
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 import Avtivity_Table from '../components/tables/Avtivity_Table'
 import DeleteModals from '../components/modals/DeleteModals'
+import { parseISO, format } from 'date-fns';
 
 const UserApplications = () => {
 
@@ -15,7 +16,7 @@ const UserApplications = () => {
   const { getFireData } = useRaffleCall()
   const { firebase_activityData } = useSelector((state) => state.raffle)
   const [activityData, setActivityData] = useState([])
-
+  const [data, setData] = useState([])
   const [delOpen, setdelOpen] = React.useState(false);
   const delHandleOpen = () => setdelOpen(true);
   const delHandleClose = () => setdelOpen(false);
@@ -26,15 +27,30 @@ const UserApplications = () => {
     getFireData('bonna-activity')
   }, [])
 
+
+
+  useEffect(() => {
+    if (!activityData || activityData.length === 0) return;
+  
+    // Önce Yıla Göre, Sonra Aya Göre Büyükten Küçüğe Sıralama
+    const sortedData = [...activityData].sort((a, b) => {
+      return b.activityYear - a.activityYear || b.activityMonth - a.activityMonth;
+    });
+  
+    setData(sortedData);
+  
+  }, [activityData]);
+
+
   useEffect(() => {
 
     const data = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
     // başvuru listesinde etkinlik tarihi en son olanı listenin en üstünde göster
-    data.sort((a,b)=>{
+    data.sort((a, b) => {
       const dateA = new Date(a.activityDate.split('.').reverse().join('-'))
       const dateB = new Date(b.activityDate.split('.').reverse().join('-'))
-      return dateB-dateA
+      return dateB - dateA
     })
     setActivityData(data)
 
@@ -49,7 +65,13 @@ const UserApplications = () => {
 
       <Box sx={{ p: 5 }}>
 
-        <Avtivity_Table activityData={activityData} delHandleOpen={delHandleOpen} setInfo={setInfo} info={info} />
+        <Avtivity_Table
+          activityData={activityData}
+          data={data}
+          delHandleOpen={delHandleOpen}
+          setInfo={setInfo}
+          info={info}
+        />
 
         <DeleteModals delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 

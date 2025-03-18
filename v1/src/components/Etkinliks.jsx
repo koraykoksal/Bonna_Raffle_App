@@ -40,12 +40,20 @@ const Etkinliks = ({ activityData }) => {
     return (
 
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 5 }}>
 
                 {
                     dateCheck(activityData).map((item, index) => (
 
-                        <Card key={index} sx={{ maxWidth: 350, backgroundColor: 'transparent', boxShadow: 0 }}>
+                        <Card 
+                        key={index} 
+                        sx={{ 
+                            maxWidth: 350, 
+                            backgroundColor: 'transparent', 
+                            boxShadow: 0 ,
+                             border:'1px solid',
+                             borderRadius:3
+                        }}>
                             <CardContent>
                                 <Typography variant='h6'>{item?.activityName}</Typography>
                                 <Typography>{item?.activityDate}</Typography>

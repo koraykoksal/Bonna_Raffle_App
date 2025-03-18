@@ -51,9 +51,9 @@ const EtkinlikDetail = () => {
     }
 
 
-    useEffect(() => {
-        get_bonnaPersonel()
-    }, [])
+    // useEffect(() => {
+    //     get_bonnaPersonel()
+    // }, [])
 
 
     return (

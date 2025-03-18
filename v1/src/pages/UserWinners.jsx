@@ -30,16 +30,16 @@ const UserWinners = () => {
       Object.values(item).forEach(person => {
         if (typeof person === 'object' && person !== null) {
           extractedData.push({
-            id:person.id,
+            id: person.id,
             name: person.name,
             surname: person.surname,
-            phone:person.phone,
-            activityDate:person.activityDate,
+            phone: person.phone,
+            activityDate: person.activityDate,
             department: person.department,
-            activityName:person.activityName,
-            rowNumber:person.rowNumber,
-            status:person.status,
-            tesis:person.tesis
+            activityName: person.activityName,
+            rowNumber: person.rowNumber,
+            status: person.status,
+            tesis: person.tesis
           });
         }
       });
@@ -48,7 +48,6 @@ const UserWinners = () => {
     setWinnersData(extractedData)
 
   }, [userWinners])
-
 
 
   return (
@@ -60,7 +59,9 @@ const UserWinners = () => {
       </Box>
 
       <Box sx={{ p: 3 }}>
-        <UserWinners_Table winnersData={winnersData}  />
+        <UserWinners_Table
+          winnersData={winnersData}
+        />
       </Box>
 
 

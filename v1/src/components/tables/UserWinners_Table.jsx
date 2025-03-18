@@ -1,5 +1,6 @@
 import React from 'react'
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
+import { Typography } from '@mui/material';
 
 
 const UserWinners_Table = ({ winnersData }) => {
@@ -37,6 +38,13 @@ const UserWinners_Table = ({ winnersData }) => {
             headerAlign: "center",
             align: "center",
             flex: 1,
+            renderCell: (params) => {
+
+                return [
+                    <Typography variant='body2'>{params.row.name.toUpperCase()}</Typography>
+
+                ]
+            }
         },
 
         {
@@ -46,6 +54,13 @@ const UserWinners_Table = ({ winnersData }) => {
             headerAlign: "center",
             align: "center",
             flex: 1,
+            renderCell: (params) => {
+
+                return [
+                    <Typography variant='body2'>{params.row.surname.toUpperCase()}</Typography>
+
+                ]
+            }
         },
         {
             field: "department",
@@ -78,15 +93,32 @@ const UserWinners_Table = ({ winnersData }) => {
             headerAlign: "center",
             align: "center",
             flex: 1,
+            renderCell: (params) => {
+
+                return [
+                    <Typography
+                        variant='body2'
+                        sx={{
+                            maxWidth: 200,
+                            overflow: 'auto',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'collapse',
+                            wordBreak: 'break-word'
+                        }}
+                    >
+                        {params.row.activityName}
+                    </Typography>
+                ]
+            }
         },
         {
             field: "activityDate",
             headerName: "Aktivite Tarihi",
-            minWidth: 100,
+            minWidth: 150,
             headerAlign: "center",
             align: "center",
             flex: 1,
-          },
+        },
 
 
     ];
@@ -98,6 +130,7 @@ const UserWinners_Table = ({ winnersData }) => {
             <DataGrid
                 columns={dataGrid_Columns}
                 rows={winnersData}
+                rowHeight={80}
                 initialState={{
                     pagination: {
                         paginationModel: {

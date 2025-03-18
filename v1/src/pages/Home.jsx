@@ -1,4 +1,4 @@
-import { Box, Button, Container } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 import React from 'react'
 import Application_Modal from '../components/modals/Application_Modal'
 import { useState, useEffect } from 'react'
@@ -15,7 +15,7 @@ export const Home = () => {
 
   const { getFireData, get_bonnaPersonel, get_userWinners, getActivityData } = useRaffleCall()
   const { token } = useSelector((state) => state.auth)
-  const { activityData } = useSelector((state) => state.raffle)
+  const { activityData, loading } = useSelector((state) => state.raffle)
 
 
   // sayfa render olduğu zaman firebase den verileri çek
@@ -24,7 +24,7 @@ export const Home = () => {
     getActivityData('images')
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
-    
+
   }, [])
 
 
@@ -35,7 +35,16 @@ export const Home = () => {
     <div style={homeBgPattern}>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', py: 5, gap: 5 }}>
-        <Etkinliks activityData={activityData} />
+
+        {
+          loading ?
+            <Typography>Etkinlik verileri yükleniyor..</Typography>
+            :
+            <Etkinliks
+              activityData={activityData}
+            />
+
+        }
       </Box>
     </div>
 

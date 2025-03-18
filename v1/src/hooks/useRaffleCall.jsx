@@ -9,7 +9,8 @@ import {
     fetchUserWinnersData,
     fetchUploadStart,
     fetchUploadEnd,
-    fetchActivityUserData
+    fetchActivityUserData,
+    fetchEnd
 
 } from '../features/raffleSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,18 +36,29 @@ const useRaffleCall = () => {
     const postFireData = async (address, info) => {
 
 
+
         try {
 
-            // const bonnaPersonel = await get_bonnaPersonel() // bonna personel datasını çek
+            dispatch(fetchStart())
+
+            const bonnaPersonel = await get_bonnaPersonel() // bonna personel datasını çek
+
+            // console.log("bonnaPersonel : ", bonnaPersonel)
+
             // await getFireData('bonna-activity') // başvuru listesini çek
             // await get_userWinners('bonna-activity-winners') // kazananlar lisesini çek
 
             //?* personel var mı kontrol et
             const findPersonel = bonnaPersonel?.find((item) => item.TCKIMLIKNO == info.tcNo)
 
+            // console.log("findPersonel : ", findPersonel)
+
             if (findPersonel) {
 
                 const activityDataDizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
+
+
+                // console.log("activityDataDizi : ", activityDataDizi)
 
                 //! bir sonraki aktivite de burayı güncelleme ve activity:2024 (current year bilgisini getir)
                 // const winnersDizi = Object.values(userWinners).reduce((acc, current) => acc.concat(current), []);
@@ -58,6 +70,8 @@ const useRaffleCall = () => {
                 // const dizi = Object.keys(firebase_activityData).map(key => { return { id: key, ...firebase_activityData[key] } })
 
                 const sameData = activityDataDizi.find((item) => item.tcNo === info.tcNo && item.activityName == info.activityName);
+
+                // console.log("sameData : ",sameData)
 
                 if (sameData) {
                     toastErrorNotify(`${info.tcNo} kimlik nuraması ile kayıt bulunmaktadır. Tekrar kayıt yapamazsınız !`)
@@ -73,17 +87,17 @@ const useRaffleCall = () => {
 
             }
             else {
-
                 toastErrorNotify(`Bonna firmasında ${info.tcNo} TC No ve ${info.name} ${info.surname} isimli personel bulunmaktadır. Kayıt yapamazsınız !`)
             }
 
 
-
-
-
-        } catch (error) {
+        }
+         catch (error) {
             toastErrorNotify('Başvuru Yapılamadı')
             console.log("Başvuru Yapılamadı: ", error)
+        }
+        finally{
+            dispatch(fetchEnd())
         }
 
     }
@@ -101,6 +115,8 @@ const useRaffleCall = () => {
                 onValue(starCountRef, (snapshot) => {
                     const data = snapshot.val();
 
+                    // console.log("data :", data)
+
                     if (data == null || data == undefined) {
                         console.log("activity data null geliyor:", data);
                         reject(new Error("Data is null or undefined"));
@@ -114,34 +130,6 @@ const useRaffleCall = () => {
                 reject(error);
             }
         });
-
-        // dispatch(fetchStart())
-
-        // try {
-
-        //     const db = getDatabase();
-        //     const starCountRef = ref(db, `${address}/`);
-        //     onValue(starCountRef, (snapshot) => {
-        //         const data = snapshot.val();
-
-        //         // console.log(data)
-
-        //         if (data == null || data == undefined) {
-        //             console.log("activity data null geliyor:", data)
-        //         }
-        //         else {
-        //             dispatch(fetchActivityData(data))
-
-        //         }
-
-
-        //     });
-
-        // } catch (error) {
-        //     toastErrorNotify('No Get Izo Press Data ❌')
-        // }
-
-
 
     }
 
@@ -163,7 +151,7 @@ const useRaffleCall = () => {
     //! bonna personel datasını çek
     const get_bonnaPersonel = async () => {
 
-        dispatch(fetchStart())
+        // dispatch(fetchStart())
 
         try {
 
@@ -178,16 +166,15 @@ const useRaffleCall = () => {
             }
 
             const res = await axios(options)
-            const data = res?.data.map((item) => {
-                return {
-                    NAME: item.NAME,
-                    SURNAME: item.SURNAME,
-                    TCKIMLIKNO: item.TCKIMLIKNO
-                }
-            })
-
-            // return data
-            dispatch(fetchBonnaPersonelData(data))
+            return res?.data
+            // const data = res?.data.map((item) => {
+            //     return {
+            //         NAME: item.NAME,
+            //         SURNAME: item.SURNAME,
+            //         TCKIMLIKNO: item.TCKIMLIKNO
+            //     }
+            // })
+            // dispatch(fetchBonnaPersonelData(data))
 
         } catch (error) {
             console.log("get_bonnaPersonel: ", error)
@@ -266,8 +253,6 @@ const useRaffleCall = () => {
         //     toastErrorNotify('No Get Izo Press Data ❌')
         // }
     }
-
-
 
     //! dosyayı storage tarafına yükle
     const postImageDataToFirebase = async (files, info) => {
@@ -357,13 +342,19 @@ const useRaffleCall = () => {
                     //db den gelen datayı array olarak çevir
                     const dizi = Object.keys(data).map(key => { return { id: key, ...data[key] } })
 
+                    // console.log("dizi  :", dizi)
+
                     dispatch(fetchActivityData(dizi));
 
                 }
             });
-        } catch (error) {
+        } 
+        catch (error) {
             console.log("getActivityData : ", error)
             toastErrorNotify('error getFireData');
+        }
+        finally{
+            dispatch(fetchEnd())
         }
 
     }
