@@ -10,14 +10,14 @@ const Winners = ({ info, katilimciSayisi }) => {
     const [result, setResult] = useState([])
 
     const dataGrid_Columns = [
-        {
-            field: "id",
-            headerName: "id",
-            minWidth: 150,
-            headerAlign: "center",
-            align: "center",
-            flex: 1,
-        },
+        // {
+        //     field: "id",
+        //     headerName: "id",
+        //     minWidth: 150,
+        //     headerAlign: "center",
+        //     align: "center",
+        //     flex: 1,
+        // },
         {
             field: "rowNumber",
             headerName: "Numara",

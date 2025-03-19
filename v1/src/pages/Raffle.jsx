@@ -22,8 +22,10 @@ const Raffle = () => {
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
     const [locationInfo, setlocationInfo] = useState([])
     const [erpData, setErpData] = useState([])
-
+    const [cekilisData, setCekilisData] = useState([])
     const [data, setData] = useState([])
+    const [filterBeyazYaka, setFilterBeyazYaka] = useState([])
+    const [filterMaviYaka, setFilterMaviYaka] = useState([])
 
     let pazaryeriSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
     let cayirovaSelections = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
@@ -89,101 +91,59 @@ const Raffle = () => {
 
     //! ERP verisi değiştiğinde bildirim gönder
     useEffect(() => {
-        if (erpData.length > 0) {
-            toastSuccessNotify('ERP Bağlantısı yapıldı ve kullanıcı verileri alındı !');
-        }
-    }, [erpData]);
 
+        if (erpData?.length > 0 && activityDatas.length > 0) {
 
-    //! erp ve aktivite datasını kontrol edip birleştirir
-    function cekilisData() {
+            toastSuccessNotify('Aktivite verisi alındı ve ERP bağlantısı yapıldı !');
 
-        const result = activityDatas?.map((item, index) => {
+            console.log(` ✅ activityDatas datasında : ${activityDatas.length} kayıt mevcut.`)
+            console.log(` ✅ erpData datasında : ${erpData.length} kayıt mevcut.`)
 
-            // activityDatas içinde eşleşen bir veri bul
-            const foundData = erpData?.find((data, index) => data.TCKIMLIKNO === item.tcNo);
-            // console.log("foundData : ", foundData)
-            return foundData ?
-                {
-                    ...item,
-                    STATUSCODE: foundData.STATUSCODE,
-                    LOKASYON: foundData.LOKASYON,
-                    TCKIMLIKNO: foundData.TCKIMLIKNO,
-                    PERSID: foundData.PERSID,
-                }
-                :
-                null
-        })
-            .filter(item => item !== null) // null olanları temizle
+            const result = activityDatas?.map((item, index) => {
 
-        return result
-    }
-
-
-    //! çekiliş fonksiyonu
-    const lottery1 = () => {
-        const totalSelections = Number(katilimciSayisi) + Number(yedekSayisi);
-
-        // Ana katılımcıları seç
-        if (currentIndex < katilimciSayisi) {
-            if (activityDatas.length === 0) {
-                console.error("Hata: Seçilecek öğe kalmadı.");
-                clearInterval(interval); // Tüm öğeler tükenirse çekilişi durdur
-                return;
-            }
-
-            let selected;
-            let dataIndex;
-            let loopCount = 0; // Sonsuz döngüyü önlemek için bir sayaç ekliyoruz.
-            do {
-                dataIndex = Math.floor(Math.random() * activityDatas.length);
-                selected = activityDatas[dataIndex];
-
-
-                if (selected.tesis === 'Pazaryeri' && pazaryeriSelections < locationInfo.pazaryeri) {
-                    pazaryeriSelections++;
-                    break;
-                }
-                else if (selected.tesis === 'Çayırova' && cayirovaSelections < locationInfo.cayirova) {
-                    cayirovaSelections++;
-                    break;
-                }
-                else if (selected.tesis === 'Pendik' && pendikSelections < locationInfo.pendik) {
-                    pendikSelections++;
-                    break;
-                }
-                else {
-                    // Eğer bu lokasyon için limit aşıldıysa, diğerlerini denemeye devam et
-                    // continue;
-                    // Eğer lokasyon limitlerine ulaşılamıyorsa, rastgele seçim yaparak döngüden çık.
-                    loopCount++;
-                    if (loopCount > activityDatas.length) {
-                        console.log("Limitlere ulaşılamadı, rastgele seçim yapılıyor...");
-                        break;
+                // activityDatas içinde eşleşen bir veri bul
+                const foundData = erpData?.find((data, index) => data.TCKIMLIKNO === item.tcNo);
+                // console.log("foundData : ", foundData)
+                return foundData ?
+                    {
+                        ...item,
+                        STATUSCODE: foundData.STATUSCODE,
+                        LOKASYON: foundData.LOKASYON,
+                        TCKIMLIKNO: foundData.TCKIMLIKNO,
+                        PERSID: foundData.PERSID,
                     }
-                }
-            } while (true);
+                    :
+                    null
+            })
+                .filter(item => item !== null) // null olanları temizle
 
-            setInfo(prevInfo => [...prevInfo, { ...selected, isBackup: false }]); // Ana listeye ekle
-            activityDatas.splice(dataIndex, 1); // Seçilen öğeyi listeden çıkar
-            currentIndex++;
-            setRaffleStart(false)
-            // Yedek katılımcıları seç
-        } else if (currentIndex < totalSelections) {
-            let selected;
-            let dataIndex;
-            dataIndex = Math.floor(Math.random() * activityDatas.length);
-            selected = activityDatas[dataIndex];
+            // return result
+            setCekilisData(result)
 
-            setInfo(prevInfo => [...prevInfo, { ...selected, isBackup: true }]); // Yedek listeye ekle
-            activityDatas.splice(dataIndex, 1); // Seçilen öğeyi listeden çıkar
-            currentIndex++;
-        } else {
-            clearInterval(interval);
+
         }
-    };
+    }, [erpData, activityDatas]);
 
 
+    useEffect(() => {
+
+        if (cekilisData?.length > 0) {
+
+            console.log(` ✅ Çekiliş datasında : ${cekilisData.length} kayıt mevcut.`)
+
+            //* beyaz yaka çalışanları filtrele
+            const beyazYaka = cekilisData?.filter(item => item.STATUSCODE === "Beyaz Yaka")
+            //* mavi yaka çalışanlar filtrele
+            const maviYaka = cekilisData?.filter(item => item.STATUSCODE === "Mavi Yaka")
+
+            setFilterBeyazYaka(beyazYaka)
+            setFilterMaviYaka(maviYaka)
+        }
+
+    }, [cekilisData])
+
+
+    //! random numara oluşturur
     const getUniqueRandomIndex = (dataLength) => {
         if (dataLength === 0) return -1; // Eğer liste boşsa -1 döndür
 
@@ -211,12 +171,12 @@ const Raffle = () => {
     const lottery = () => {
         const totalSelections = Number(katilimciSayisi) + Number(yedekSayisi);
         let loopCount = 0;
-        let maxLoopCount = cekilisData().length * 2;
+        let maxLoopCount = cekilisData.length * 2;
 
 
         // let dataIndex = parseInt(Math.random() * cekilisData().length);
-        let dataIndex = getUniqueRandomIndex(cekilisData().length);
-        let selected = cekilisData()[dataIndex];
+        let dataIndex = getUniqueRandomIndex(cekilisData.length);
+        let selected = cekilisData[dataIndex];
 
         console.log(" *** dataIndex ***", dataIndex);
         // console.log(" *** Seçilen Kişi ***", selected);
@@ -276,7 +236,7 @@ const Raffle = () => {
 
         }]);
 
-        cekilisData().splice(dataIndex, 1);
+        cekilisData.splice(dataIndex, 1);
         currentIndex++;
 
         // ✅ Yaka sayısını artır
@@ -289,7 +249,6 @@ const Raffle = () => {
             setRaffleStart(false)
         }
     };
-
 
 
     const handleSubmit = (e) => {
@@ -312,18 +271,7 @@ const Raffle = () => {
         }
         else {
 
-            if (activityDatas.length > 0) {
-
-                // if (
-                //     !locationInfo.cayirova ||
-                //     !locationInfo.pazaryeri ||
-                //     !locationInfo.pendik ||
-                //     !locationInfo.beyaz ||
-                //     !locationInfo.mavi
-                // ) {
-                //     return toastWarnNotify('Please check settings !')
-                // }
-
+            if (activityDatas?.length > 0) {
                 setRaffleStart(true)
                 currentIndex = 0;
                 winners = [];
@@ -347,7 +295,6 @@ const Raffle = () => {
         }
     }
 
-    // console.log(info)
 
     return (
         <div style={raffleBgPattern}>
@@ -405,7 +352,7 @@ const Raffle = () => {
 
 
             {
-                raffleStart ?
+                (raffleStart) ?
                     (
                         <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 5, gap: 3 }}>
 
@@ -413,12 +360,12 @@ const Raffle = () => {
                                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 5, gap: 3
                             }}>
                                 <Typography sx={{ color: 'red', fontWeight: 800 }}>
-                                    ( Asil / Yedek Seçimi Yapılıyor ) : {info.length}
+                                    {`${katilimciSayisi} Asil / ${katilimciSayisi} Yedek Seçimi Yapılıyor : ${info.length}`}
                                 </Typography>
 
                                 {info?.length > 0 && (
                                     <Typography fontSize={16}>
-                                        {info[info?.length - 1]?.dataIndex} - 
+                                        {info[info?.length - 1]?.dataIndex} -
                                         {info[info?.length - 1]?.isBackup ? 'Yedek - ' : 'Asil - '}
                                         (
                                         {`${info[info?.length - 1]?.name?.toUpperCase()} ${info[info?.length - 1]?.surname?.toUpperCase()}`}
