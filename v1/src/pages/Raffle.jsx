@@ -34,7 +34,7 @@ const Raffle = () => {
     let beyazYakaSelections = 0;
     let ise = 0; // "Pazaryeri" seçimlerini saymak için bir sayaç
 
-    const cekilisSuresi = 3000
+    const cekilisSuresi = 20000
     let interval = 0;
     let winners = [];
     let currentIndex = 0;
@@ -168,87 +168,105 @@ const Raffle = () => {
     };
 
 
-    const lottery = () => {
-        const totalSelections = Number(katilimciSayisi) + Number(yedekSayisi);
+
+    const selectParticipant = (isBackup) => {
         let loopCount = 0;
-        let maxLoopCount = cekilisData.length * 2;
+        let maxLoopCount = cekilisData.length * 3; // Sonsuz döngüye girmemesi için sınır
+        let selected;
+        let dataIndex;
 
+        const remainingSelections = {
+            Pazaryeri: locationInfo.pazaryeri - pazaryeriSelections,
+            Çayırova: locationInfo.cayirova - cayirovaSelections,
+            Pendik: locationInfo.pendik - pendikSelections
+        };
 
-        // let dataIndex = parseInt(Math.random() * cekilisData().length);
-        let dataIndex = getUniqueRandomIndex(cekilisData.length);
-        let selected = cekilisData[dataIndex];
+        do {
+            if (cekilisData.length === 0) {
+                console.error("Hata: Seçilecek öğe kalmadı.");
+                return null;
+            }
 
-        console.log(" *** dataIndex ***", dataIndex);
-        // console.log(" *** Seçilen Kişi ***", selected);
+            dataIndex = getUniqueRandomIndex(cekilisData.length);
+            selected = cekilisData[dataIndex];
 
-        const lokasyon = selected.LOKASYON;
-        const statusCode = selected.STATUSCODE;
+            const { LOKASYON, STATUSCODE, TCKIMLIKNO } = selected;
 
-        // ✅ Beyaz Yaka mı, Mavi Yaka mı?
-        const isBeyazYaka = statusCode === "Beyaz Yaka";
-        const isMaviYaka = statusCode === "Mavi Yaka";
-
-        //* seçilen kişi daha önce seçilmiş mi kontrol et
-        const alreadySelected = info.some(person => person.tcNo === selected.TCKIMLIKNO);
-
-
-
-        while (currentIndex < totalSelections && loopCount < maxLoopCount) {
-
+            // Daha önce seçilmiş mi?
+            const alreadySelected = info.some(person => person.tcNo === TCKIMLIKNO);
 
             if (alreadySelected) {
                 loopCount++;
                 continue;
             }
 
-            // ✅ Beyaz Yaka ve Mavi Yaka için belirlenen sayı sınırına ulaşıldı mı?
-            // if (isBeyazYaka && beyazYakaSelections >= locationInfo.beyaz) {
-            //     loopCount++;
-            //     continue; // Beyaz Yaka kotası dolduysa tekrar seç
-            // }
-            // if (isMaviYaka && maviYakaSelections >= locationInfo.mavi) {
-            //     loopCount++;
-            //     continue; // Mavi Yaka kotası dolduysa tekrar seç
-            // }
+            let isSelected = false;
 
-
-            if (selected.tesis === "Pazaryeri" && pazaryeriSelections < locationInfo.pazaryeri) {
+            // **Lokasyon bazlı seçim yap**
+            if (LOKASYON === 'Pazaryeri' && remainingSelections.Pazaryeri > 0) {
                 pazaryeriSelections++;
-            } else if (selected.tesis === "Çayırova" && cayirovaSelections < locationInfo.cayirova) {
+                isSelected = true;
+            }
+            else if (LOKASYON === 'Çayırova' && remainingSelections.Çayırova > 0) {
                 cayirovaSelections++;
-            } else if (selected.tesis === "Pendik" && pendikSelections < locationInfo.pendik) {
+                isSelected = true;
+            }
+            else if (LOKASYON === 'Pendik' && remainingSelections.Pendik > 0) {
                 pendikSelections++;
-            } else {
-                loopCount++;
-                continue;
+                isSelected = true;
             }
 
-        }
+            if (isSelected) {
+                break; // ✅ Uygun kişi bulundu, döngüden çık
+            }
+
+            loopCount++;
+
+            // **Eğer limitlere ulaşılamadıysa rastgele bir lokasyondan seçim yap**
+            if (loopCount >= maxLoopCount) {
+                console.log("Limitlere ulaşılamadı, rastgele seçim yapılıyor...");
+                selected = cekilisData[Math.floor(Math.random() * cekilisData.length)];
+                break;
+            }
 
 
+        } while (true);
 
-        setInfo(prevInfo => [...prevInfo,
-        {
-            ...selected,
-            statusCode,
-            dataIndex,
-            isBackup: currentIndex >= katilimciSayisi
+        // ✅ Seçilen katılımcıyı listeye ekle
+        setInfo(prevInfo => [...prevInfo, { ...selected, isBackup }]);
 
-        }]);
-
+        // ✅ Seçilen öğeyi listeden çıkar
         cekilisData.splice(dataIndex, 1);
-        currentIndex++;
 
-        // ✅ Yaka sayısını artır
-        // if (isBeyazYaka) beyazYakaSelections++;
-        // if (isMaviYaka) maviYakaSelections++;
-
-
-        if (currentIndex >= totalSelections) {
-            clearInterval(interval);
-            setRaffleStart(false)
-        }
+        return selected;
     };
+
+    const lottery = () => {
+        const totalSelections = Number(katilimciSayisi) + Number(yedekSayisi);
+
+        // 🔹 Ana katılımcıları seç
+        while (pazaryeriSelections < locationInfo.pazaryeri
+            || cayirovaSelections < locationInfo.cayirova
+            || pendikSelections < locationInfo.pendik) {
+
+            if (currentIndex >= katilimciSayisi) break;
+
+            const selected = selectParticipant(false);
+            if (!selected) break; // Eğer seçilecek kişi kalmadıysa dur
+            currentIndex++;
+        }
+
+        // 🔹 Yedek katılımcıları seç
+        while (currentIndex < totalSelections) {
+            const selected = selectParticipant(true);
+            if (!selected) break;
+            currentIndex++;
+        }
+
+        clearInterval(interval);
+        setRaffleStart(false);
+    };
+
 
 
     const handleSubmit = (e) => {
@@ -272,6 +290,10 @@ const Raffle = () => {
         else {
 
             if (activityDatas?.length > 0) {
+
+                // state içini temizle
+                setInfo([])
+
                 setRaffleStart(true)
                 currentIndex = 0;
                 winners = [];
@@ -360,7 +382,8 @@ const Raffle = () => {
                                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 5, gap: 3
                             }}>
                                 <Typography sx={{ color: 'red', fontWeight: 800 }}>
-                                    {`${katilimciSayisi} Asil / ${katilimciSayisi} Yedek Seçimi Yapılıyor : ${info.length}`}
+                                    {/* {`${katilimciSayisi} Asil / ${katilimciSayisi} Yedek Seçimi Yapılıyor : ${info.length}`} */}
+                                    {`${katilimciSayisi} Asil / ${katilimciSayisi} Yedek Seçimi Yapılıyor`}
                                 </Typography>
 
                                 {info?.length > 0 && (

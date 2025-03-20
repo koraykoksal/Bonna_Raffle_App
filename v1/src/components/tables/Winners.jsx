@@ -34,14 +34,14 @@ const Winners = ({ info, katilimciSayisi }) => {
             align: "center",
             flex: 1,
         },
-        {
-            field: "statusCode",
-            headerName: "Durum",
-            minWidth: 150,
-            headerAlign: "center",
-            align: "center",
-            flex: 1,
-        },
+        // {
+        //     field: "STATUSCODE",
+        //     headerName: "Durum",
+        //     minWidth: 150,
+        //     headerAlign: "center",
+        //     align: "center",
+        //     flex: 1,
+        // },
         {
             field: "name",
             headerName: "Ad",

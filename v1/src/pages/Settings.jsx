@@ -245,7 +245,6 @@ const Settings = () => {
                         <TextField
                             placeholder='0'
                             size='small'
-                            required
                             name='mavi'
                             id='mavi'
                             variant='outlined'
@@ -263,7 +262,6 @@ const Settings = () => {
                         <TextField
                             placeholder='0'
                             size='small'
-                            required
                             name='beyaz'
                             id='beyaz'
                             variant='outlined'
