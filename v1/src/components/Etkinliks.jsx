@@ -23,14 +23,14 @@ import { useNavigate } from "react-router-dom"
 import { uid } from "uid";
 
 
-const Etkinliks = ({ activityData }) => {
+const Etkinliks = ({ activityData, winnersData }) => {
 
     const navigate = useNavigate()
 
     // aktivite datasına sort işlemi yap
     function dateCheck() {
         const sortData = [...activityData]
-         return sortData.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate));
+        return sortData.sort((a, b) => new Date(b.activityDate) - new Date(a.activityDate));
 
     }
 
@@ -45,15 +45,15 @@ const Etkinliks = ({ activityData }) => {
                 {
                     dateCheck(activityData).map((item, index) => (
 
-                        <Card 
-                        key={index} 
-                        sx={{ 
-                            maxWidth: 350, 
-                            backgroundColor: 'transparent', 
-                            boxShadow: 0 ,
-                             border:'1px solid',
-                             borderRadius:3
-                        }}>
+                        <Card
+                            key={index}
+                            sx={{
+                                maxWidth: 350,
+                                backgroundColor: 'transparent',
+                                boxShadow: 0,
+                                border: '1px solid',
+                                borderRadius: 3
+                            }}>
                             <CardContent>
                                 <Typography variant='h6'>{item?.activityName}</Typography>
                                 <Typography>{item?.activityDate}</Typography>
@@ -68,7 +68,7 @@ const Etkinliks = ({ activityData }) => {
 
                                 {
                                     item?.publish &&
-                                    <Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: item })} sx={{ letterSpacing: 3 }}>Detay</Button>
+                                    <Button variant='contained' onClick={() => navigate(`/${item.id}`, { state: {item, winnersData} })} sx={{ letterSpacing: 3 }}>Detay</Button>
                                 }
 
                                 <Typography variant='h6' fontWeight={700}>{item?.publish ? "Aktif" : "Pasif"}</Typography>

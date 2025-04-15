@@ -9,24 +9,59 @@ import cokguzelhareketler2 from "../assets/etkinlik/cokguzelhareketler2.png"
 import Etkinliks from '../components/Etkinliks';
 import { homeBgPattern } from '../styles/theme';
 import NewActivity from '../components/modals/NewActivity';
-
+import { standardizeDate } from '../helper/format'
 
 export const Home = () => {
 
   const { getFireData, get_bonnaPersonel, get_userWinners, getActivityData } = useRaffleCall()
   const { token } = useSelector((state) => state.auth)
-  const { activityData, loading } = useSelector((state) => state.raffle)
+  const { activityData, loading, bonnaPersonel, userWinners } = useSelector((state) => state.raffle)
+
+  const [winnersData, setWinnersData] = useState([])
+
+  let extractedData = [];
 
 
   // sayfa render olduğu zaman firebase den verileri çek
   useEffect(() => {
-    get_bonnaPersonel()
+    // get_bonnaPersonel()
     getActivityData('images')
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
 
   }, [])
 
+
+
+  useEffect(() => {
+
+    const data = Object.keys(userWinners).map(key => { return { id: key, ...userWinners[key] } })
+
+    data.forEach(item => {
+      Object.values(item).forEach(person => {
+        
+        if (typeof person === 'object' && person !== null) {
+          extractedData.push({
+            id: person.id,
+            name: person.name,
+            surname: person.surname,
+            phone: person.phone,
+            activityDate: standardizeDate(person.activityDate),
+            department: person.department,
+            activityName: person.activityName,
+            status: person.isBackup || person.status,
+            tesis: person.tesis
+          });
+        }
+      });
+    });
+
+    setWinnersData(extractedData)
+
+  }, [userWinners])
+
+
+  const data = winnersData.filter((item)=>item.activityDate.split('-')[0] == '2024')
 
 
 
@@ -42,6 +77,7 @@ export const Home = () => {
             :
             <Etkinliks
               activityData={activityData}
+              winnersData={winnersData}
             />
 
         }

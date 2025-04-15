@@ -7,7 +7,7 @@ import Winners from '../components/tables/Winners'
 import loading from "../assets/gift/loading.gif"
 import { raffleBgPattern } from '../styles/theme'
 import { toastSuccessNotify, toastWarnNotify } from '../helper/ToastNotify'
-
+import {bonnaPersonels} from '../helper/personels'
 
 
 const Raffle = () => {
@@ -21,7 +21,7 @@ const Raffle = () => {
     const [raffleStart, setRaffleStart] = useState(false)
     const [katilimciSayisi, setkatilimciSayisi] = useState(0)
     const [locationInfo, setlocationInfo] = useState([])
-    const [erpData, setErpData] = useState([])
+    // const [bonnaPersonels, setbonnaPersonels] = useState([])
     const [cekilisData, setCekilisData] = useState([])
     const [data, setData] = useState([])
     const [filterBeyazYaka, setFilterBeyazYaka] = useState([])
@@ -68,41 +68,41 @@ const Raffle = () => {
 
 
     //!bonna personel verisini çek
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                //! SAYFA RENDER OLDUĞU ZAMAN TÜM KAR PORSELEN ÇALIŞAN DATASINI ÇEK 
-                //! GELEN DATA SONUNUCU STATE AKTAR
-                //! STATE DE OLAN VERİ İLE "selected" DEĞİŞKENİNE GELEN DATA NIN KARŞILAŞTIRMASINI YAP MAVİ-BEYAZ YAKA BİLGİSİNİ AL
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             //! SAYFA RENDER OLDUĞU ZAMAN TÜM KAR PORSELEN ÇALIŞAN DATASINI ÇEK 
+    //             //! GELEN DATA SONUNUCU STATE AKTAR
+    //             //! STATE DE OLAN VERİ İLE "selected" DEĞİŞKENİNE GELEN DATA NIN KARŞILAŞTIRMASINI YAP MAVİ-BEYAZ YAKA BİLGİSİNİ AL
 
-                const response = await get_bonnaPersonel()
-                // const data = response.filter(item => item.SURNAME === "KÖKSAL")
-                setErpData(response)
+    //             const response = await get_bonnaPersonel()
+    //             // const data = response.filter(item => item.SURNAME === "KÖKSAL")
+    //             setbonnaPersonels(response)
 
-            } catch (error) {
-                console.error("Veri çekilirken hata oluştu:", error);
-            }
-        };
+    //         } catch (error) {
+    //             console.error("Veri çekilirken hata oluştu:", error);
+    //         }
+    //     };
 
-        fetchData();
+    //     fetchData();
 
-    }, []);
+    // }, []);
 
 
     //! ERP verisi değiştiğinde bildirim gönder
     useEffect(() => {
 
-        if (erpData?.length > 0 && activityDatas.length > 0) {
+        if (bonnaPersonels?.length > 0 && activityDatas.length > 0) {
 
             toastSuccessNotify('Aktivite verisi alındı ve ERP bağlantısı yapıldı !');
 
             console.log(` ✅ activityDatas datasında : ${activityDatas.length} kayıt mevcut.`)
-            console.log(` ✅ erpData datasında : ${erpData.length} kayıt mevcut.`)
+            console.log(` ✅ bonnaPersonels datasında : ${bonnaPersonels.length} kayıt mevcut.`)
 
             const result = activityDatas?.map((item, index) => {
 
                 // activityDatas içinde eşleşen bir veri bul
-                const foundData = erpData?.find((data, index) => data.TCKIMLIKNO === item.tcNo);
+                const foundData = bonnaPersonels?.find((data, index) => data.TCKIMLIKNO === item.tcNo);
                 // console.log("foundData : ", foundData)
                 return foundData ?
                     {
@@ -122,7 +122,7 @@ const Raffle = () => {
 
 
         }
-    }, [erpData, activityDatas]);
+    }, [bonnaPersonels, activityDatas]);
 
 
     useEffect(() => {
@@ -142,6 +142,7 @@ const Raffle = () => {
 
     }, [cekilisData])
 
+    // console.log(cekilisData)
 
     //! random numara oluşturur
     const getUniqueRandomIndex = (dataLength) => {
@@ -268,7 +269,6 @@ const Raffle = () => {
     };
 
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -277,12 +277,9 @@ const Raffle = () => {
             Number(locationInfo.pazaryeri) +
             Number(locationInfo.pendik)
 
-
-
-
-        if (!erpData.length > 0) {
-            return toastWarnNotify('ERP Bağlantı hatası. Kullanıcı verileri alınamadı !')
-        }
+        // if (!bonnaPersonels.length > 0) {
+        //     return toastWarnNotify('ERP Bağlantı hatası. Kullanıcı verileri alınamadı !')
+        // }
 
         if (katilimciSayisi <= 0 || katilimciSayisi != locationCount) {
             return toastWarnNotify('Katılımcı sayısını kontrol ediniz !')
@@ -317,6 +314,7 @@ const Raffle = () => {
         }
     }
 
+    console.log(" info : ", info)
 
     return (
         <div style={raffleBgPattern}>
@@ -339,7 +337,7 @@ const Raffle = () => {
             <form onSubmit={handleSubmit}>
                 <Container sx={{ display: 'flex', justifyContent: 'space-evenly', gap: 3, p: 3, mt: 8 }}>
                     <Button
-                        disabled={!erpData.length > 0}
+                        // disabled={!bonnaPersonels?.length > 0}
                         color='success'
                         variant='contained'
                         style={{ width: '150px', height: 40 }}
@@ -349,7 +347,7 @@ const Raffle = () => {
                     </Button>
 
                     <TextField
-                        disabled={!erpData.length > 0}
+                        // disabled={!bonnaPersonels?.length > 0}
                         size='small'
                         sx={{ width: '150px' }}
                         // required
@@ -357,11 +355,11 @@ const Raffle = () => {
                         type='number'
                         value={katilimciSayisi}
                         onChange={(e) => setkatilimciSayisi(e.target.value)}
-                        helperText={!erpData.length > 0 && 'ERP Bağlantısı yapılamadı kullanıcı verisi olmadığı için işlem başlatılamaz !. Sayfayı yenileyerek ERP bağlantısı yapıldı bilgisini kontrol ediniz.'}
+                        helperText={!bonnaPersonels?.length > 0 && 'ERP Bağlantısı yapılamadı kullanıcı verisi olmadığı için işlem başlatılamaz !. Sayfayı yenileyerek ERP bağlantısı yapıldı bilgisini kontrol ediniz.'}
                     />
 
                     <Button
-                        disabled={!erpData.length > 0}
+                        // disabled={!bonnaPersonels?.length > 0}
                         color='primary'
                         variant='contained'
                         sx={{ width: '150px', height: 40 }}

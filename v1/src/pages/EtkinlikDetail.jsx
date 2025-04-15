@@ -27,8 +27,8 @@ const EtkinlikDetail = () => {
         tesis: "",
         activityYear: currentYear,
         activityMonth: currentMonth,
-        activityName: state.activityName,
-        activityDate: state.activityDate
+        activityName: state.item.activityName,
+        activityDate: state.item.activityDate
     })
 
     const [open, setOpen] = useState(false)
@@ -44,16 +44,11 @@ const EtkinlikDetail = () => {
             birthday: "",
             tesis: "",
             activityYear: currentYear,
-            activityName: state.activityName,
-            activityDate: state.activityDate
+            activityName: state.item.activityName,
+            activityDate: state.item.activityDate
 
         })
     }
-
-
-    // useEffect(() => {
-    //     get_bonnaPersonel()
-    // }, [])
 
 
     return (
@@ -63,10 +58,10 @@ const EtkinlikDetail = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 4 }}>
                 <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Button variant='contained' color='success' onClick={handleOpen} sx={{ width: '200px', letterSpacing: 3 }}>Başvur</Button>
+                    <Button disabled={!state.winnersData.length>0} variant='contained' color='success' onClick={handleOpen} sx={{ width: '200px', letterSpacing: 3 }}>Başvur</Button>
                 </Container>
                 <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <img src={state.imgUrl} style={{ width: '850px' }} />
+                    <img src={state.item.imgUrl} style={{ width: '850px' }} />
                 </Container>
                 <Container sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 3 }}>
                     <Button variant='outlined' color='secondary' onClick={() => navigate(-1)} sx={{ width: '200px' }}>Geri</Button>
@@ -75,7 +70,7 @@ const EtkinlikDetail = () => {
             </Box>
 
 
-            <Application_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} state={state} />
+            <Application_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} state={state.item} />
 
 
 
