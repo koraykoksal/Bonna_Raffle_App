@@ -15,7 +15,7 @@ export const Home = () => {
 
   const { getFireData, get_bonnaPersonel, get_userWinners, getActivityData } = useRaffleCall()
   const { token } = useSelector((state) => state.auth)
-  const { activityData, loading, bonnaPersonel, userWinners } = useSelector((state) => state.raffle)
+  const { activityData, loading, bonnaPersonels, userWinners } = useSelector((state) => state.raffle)
 
   const [winnersData, setWinnersData] = useState([])
 
@@ -24,7 +24,7 @@ export const Home = () => {
 
   // sayfa render olduğu zaman firebase den verileri çek
   useEffect(() => {
-    // get_bonnaPersonel()
+    get_bonnaPersonel()
     getActivityData('images')
     getFireData('bonna-activity')
     get_userWinners('bonna-activity-winners')
@@ -61,9 +61,9 @@ export const Home = () => {
   }, [userWinners])
 
 
-  const data = winnersData.filter((item)=>item.activityDate.split('-')[0] == '2024')
+  // const data = bonnaPersonels.filter((item)=>item.TCKIMLIKNO == '12176075560')
 
-
+  // console.log(data)
 
   return (
 

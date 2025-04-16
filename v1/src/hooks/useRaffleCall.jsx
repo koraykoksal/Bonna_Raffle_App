@@ -22,7 +22,6 @@ import { getDatabase, onValue, ref, remove, set, update } from "firebase/databas
 import { uid } from "uid";
 import { useState } from 'react';
 import { json, useNavigate } from "react-router-dom"
-import { bonnaPersonels } from '../helper/personels'
 import { getStorage, ref as dbRef, uploadBytes, getDownloadURL, getMetadata, listAll, list, deleteObject } from "firebase/storage";
 import { standardizeDate } from '../helper/format'
 
@@ -32,8 +31,7 @@ const useRaffleCall = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { firebase_activityData, bonnaPersonel, userWinners } = useSelector((state) => state.raffle)
-    const year = new Date().getFullYear()
+    const { firebase_activityData, bonnaPersonels, userWinners } = useSelector((state) => state.raffle)
 
     //! etkinlik register kaydı yap
     const postFireData = async (address, info) => {
@@ -178,13 +176,14 @@ const useRaffleCall = () => {
     const get_bonnaPersonel = async () => {
 
         // dispatch(fetchStart())
+        const year = new Date().getFullYear()
+        console.log(year)
 
         try {
 
             const options = {
                 method: 'POST',
-                url: `http://connector.karporselen.com/butunbiApi/getUsers`,
-                // url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
+                url: `${process.env.REACT_APP_bonnaUsers_BaseAddress}`,
                 headers: {
                     'APIKEY': `${process.env.REACT_APP_bonnaApiKey}`,
                     'PYEAR': year
@@ -193,7 +192,7 @@ const useRaffleCall = () => {
             }
 
             const res = await axios(options)
-            return res?.data
+            // return res?.data
             // const data = res?.data.map((item) => {
             //     return {
             //         NAME: item.NAME,
@@ -201,7 +200,13 @@ const useRaffleCall = () => {
             //         TCKIMLIKNO: item.TCKIMLIKNO
             //     }
             // })
-            // dispatch(fetchBonnaPersonelData(data))
+
+            if (res.data.length > 0) {
+                dispatch(fetchBonnaPersonelData(res?.data))
+            }
+            else {
+                toastErrorNotify('ERP Connection Error ! , Please Contact Admin or Check connector.karporselen.com')
+            }
 
         } catch (error) {
             console.log("get_bonnaPersonel: ", error)

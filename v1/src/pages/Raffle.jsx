@@ -7,7 +7,6 @@ import Winners from '../components/tables/Winners'
 import loading from "../assets/gift/loading.gif"
 import { raffleBgPattern } from '../styles/theme'
 import { toastSuccessNotify, toastWarnNotify } from '../helper/ToastNotify'
-import {bonnaPersonels} from '../helper/personels'
 
 
 const Raffle = () => {
@@ -15,7 +14,7 @@ const Raffle = () => {
 
     const { getFireData, getActivityData, post_userWinners, get_bonnaPersonel } = useRaffleCall()
     const { userID, token } = useSelector((state) => state.auth)
-    const { firebase_activityData, activityData, lokasyonData } = useSelector((state) => state.raffle)
+    const { firebase_activityData, activityData,bonnaPersonels, lokasyonData } = useSelector((state) => state.raffle)
     const [activityDatas, setActivityDatas] = useState([])
     const [info, setInfo] = useState([])
     const [raffleStart, setRaffleStart] = useState(false)
